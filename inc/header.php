@@ -1,7 +1,7 @@
 <?php if (isset($_SESSION['idUser'])) { ?>
-<div class="header_basket">
+<div class="header_insta">
     <div>
-        <button class="preview_basket">Panier <?php echo count_basket($link, $_SESSION['idUser']) ?></button>
+        <button class="preview_insta">Panier <?php echo count_basket($link, $_SESSION['idUser']) ?></button>
     </div>
     </div>
 <?php } ?>

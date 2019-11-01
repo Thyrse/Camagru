@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Compte</title>
+    <title>Creer un produit</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
     <script type="text/javascript" src="script.js"></script>
 </head>
@@ -49,29 +49,21 @@
         </div>
     </header>
     <div id="main">
-        <div class="create create_user">
-            <h3>Informations de compte</h3>
-            <form name="submit" method="post" action="">
-                <div class="user_registration">
-                    <label>Nom :</label>
-                    <input type="text" name="lastname" placeholder="Nom de famille" value="" required>
-                    <label>Prénom :</label>
-                    <input type="text" name="firstname" placeholder="Prénom" value="" required>
-                    <label for="username">Nom d'utilisateur :</label>
-                    <input type="text" name="username" maxlength="10" placeholder="Ex: Tintin, Harambe..." value="" required>
-                    <label for="email">Email :</label>
-                    <input type="email" name="email" maxlength="30" placeholder="Email" value="" required>
-                    <label for="password">Mot de passe :</label>
-                    <input type="password" name="password" maxlength="20" placeholder="Unique pour ce site...">
-                    <label>Confirmer le mot de passe :</label>
-                    <input type="password" name="confirm_password" maxlength="20" placeholder="Retapez le mot de passe...">
+        <div class="create">
+            <h3>Ajouter une photo</h3>
+            <form name="submit" method="post" action="" enctype="multipart/form-data">
+                <div class="create_form">
+                    <label for="desc">Légende : </label>
+                    <textarea name="desc" rows="8" cols="21" placeholder="Description..." required></textarea>
+                    <label for="image">Image :</label>
+                    <input type="file" name="image" required>
                 </div>
                 <div class="create_button">
-                    <button type="submit" name="submit">Modifier</button>
+                    <button type="submit" name="submit">Publier la photo</button>
                 </div>
-                <a id="delete_confirm" href="#">Supprimer son compte</a>
             </form>
         </div>
+
     </div>
     <footer>
         <div id="footer">

@@ -187,9 +187,9 @@ a {
 
 .items-list .item_desc {
     width: 30%;
-    height: 100%;
+    max-height: 100%;
     padding: 10px;
-    overflow-x: scroll;
+    overflow-y: scroll;
 }
 
 .items-list .item_desc .item_commentary {
@@ -200,7 +200,7 @@ a {
 
 .items-list .item_desc .item_commentary p {
     font-size: 12px;
-    margin: 0;
+    margin: 5px 0;
 }
 
 .items-list .item_desc .item_commentary span {
@@ -491,21 +491,24 @@ footer {
 }
 
 .create .create_button button {
-    padding: 30px 10px;
-    box-shadow: inset 0px 1px 0px 0px #caefab;
-    background: linear-gradient(to bottom, #77d42a 5%, #5cb811 100%);
-    background-color: #77d42a;
-    border-radius: 6px;
-    border: 1px solid #268a16;
-    display: inline-block;
-    cursor: pointer;
-    font-weight: bold;
-    text-decoration: none;
+    box-shadow:inset 0px 1px 0px 0px #f29c93;
+    background:linear-gradient(to bottom, #f49b48 5%, #c75828 100%);
+    background-color:#f49b48;
+    border-radius:3px;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:Times New Roman;
+    font-size:15px;
+    padding:6px 24px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #b23e35;
+    border: none;
 }
 
 .create .create_button button:hover {
-    background: linear-gradient(to bottom, #5cb811 5%, #77d42a 100%);
-    background-color: #5cb811;
+    background:linear-gradient(to bottom, #c75828 5%, #f49b48 100%);
+    background-color:#c75828;
 }
 
 .create .create_button button:active {
@@ -621,4 +624,28 @@ footer {
     border-top: 1px solid #dcdcdc;
     padding: 7px 10px;
     text-align: center;
+}
+.toggle .toggle_button button {
+    box-shadow:inset 0px 1px 0px 0px #f29c93;
+    background:linear-gradient(to bottom, #f49b48 5%, #c75828 100%);
+    background-color:#f49b48;
+    border-radius:3px;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:Times New Roman;
+    font-size:15px;
+    padding:6px 24px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #b23e35;
+    border: none;
+}
+.toggle .toggle_button button:hover {
+    background:linear-gradient(to bottom, #c75828 5%, #f49b48 100%);
+    background-color:#c75828;
+}
+
+.toggle .toggle_button button:active {
+    position: relative;
+    top: 1px;
 }

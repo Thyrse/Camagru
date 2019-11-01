@@ -1,9 +1,7 @@
 window.addEventListener("load", function() {
     var toggle_login = document.getElementById('toggle_login');
-    var toggle_basket = document.getElementById('toggle_basket');
     var toggle_user = document.getElementById('toggle_user');
     var connect = document.getElementsByClassName('sign_in');
-    var basket = document.getElementsByClassName('preview_insta');
     var user = document.getElementsByClassName('infos_user');
     var deleted = document.getElementById('delete_confirm');
 
@@ -20,20 +18,6 @@ window.addEventListener("load", function() {
             })
         }
         AppearConnect();
-    }
-    if (basket.length != 0) {
-        function AppearBasket() {
-            basket[0].addEventListener("click", function(e) {
-                var styles = window.getComputedStyle(toggle_basket);
-                var value = styles.getPropertyValue('display');
-                if (value == "none") {
-                    toggle_basket.style.display = "flex";
-                } else if (value == "flex") {
-                    toggle_basket.style.display = "none";
-                }
-            })
-        }
-        AppearBasket();
     }
     if (user.length != 0) {
         function AppearPanel() {

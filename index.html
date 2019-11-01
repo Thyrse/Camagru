@@ -14,7 +14,7 @@
     <header>
         <div class="header_insta">
             <div>
-                <button class="preview_insta">Nouveau</button>
+                <button class="preview_insta"><a href="#">Nouveau</a></button>
             </div>
         </div>
         <div class="header_logo">
@@ -54,10 +54,15 @@
     <div id="main">
         <div class="items-block">
             <div class="items-list">
+                <div class="item_empty">
+                    <p>Rien à afficher, revenez plus tard...</p>
+                </div>
                 <div class="item">
                     <div class="item_image">
                         <img src="assets/images/illu.jpg">
-                        <button class="item_like"></button>
+                        <form name="submit" method="post" action="" enctype="multipart/form-data">
+                            <button class="item_like"></button>
+                        </form>
                     </div>
                     <div class="item_desc">
                         <div class="item_author">
@@ -92,7 +97,10 @@
                             </div>
                         </div>
                         <div class="item_area">
-                            <textarea name="desc" rows="8" cols="21" placeholder="Votre commentaire..." required></textarea>
+                            <form name="submit" method="post" action="" enctype="multipart/form-data">
+                                <textarea name="desc" rows="8" cols="21" placeholder="Votre commentaire..." required></textarea>
+                                <button type="submit">Publier</button>
+                            </form>
                         </div>
                     </div>
                 </div>

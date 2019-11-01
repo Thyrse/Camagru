@@ -156,6 +156,11 @@ a {
     justify-content: center;
 }
 
+.items-list .item_empty {
+    display: none;
+    font-size: 25px;
+}
+
 .items-list .item {
     max-width: 900px;
     box-shadow: 0px 0px 15px -12px #000000;
@@ -246,10 +251,33 @@ a {
     max-width: 90%;
     max-height: 40px;
     width: 100%;
-    box-shadow: inset 0px 0px 1px 0px #000000;
     position: absolute;
     bottom: 10px;
     right: 15px;
+}
+
+.items-list .item_desc .item_area button {
+    border: none;
+    box-shadow: inset 0px 0px 1px 0px #000000;
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 3px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.items-list .item_desc .item_area form {
+    display: flex;
+}
+
+.items-list .item_desc .item_area button:hover {
+    background: linear-gradient(to bottom, #ffffff 5%, #dcdcdc 100%);
+    border: none;
+}
+
+.items-list .item_desc .item_area button:active {
+    background: linear-gradient(to bottom, #dcdcdc 5%, #ffffff 100%);
 }
 
 .items-list .item_desc textarea {
@@ -260,6 +288,9 @@ a {
     outline: none;
     resize: none;
     box-shadow: inset 0px 0px 1px 0px #000000;
+    border-radius: 3px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 
@@ -546,7 +577,7 @@ footer {
     display: inline-block;
     cursor: pointer;
     color: #ffffff;
-    font-family: Times New Roman;
+    font-family: "Times New Roman";
     font-size: 15px;
     padding: 6px 24px;
     text-decoration: none;
@@ -626,6 +657,7 @@ footer {
 
 .toggle.toggle_login {
     right: 5px;
+    z-index: 999;
 }
 
 .toggle.toggle_basket {
@@ -682,7 +714,7 @@ footer {
     display: inline-block;
     cursor: pointer;
     color: #ffffff;
-    font-family: Times New Roman;
+    font-family: "Times New Roman";
     font-size: 15px;
     padding: 6px 24px;
     text-decoration: none;
@@ -702,7 +734,6 @@ footer {
 
 .item .item_image .item_like::after {
     content: url(assets/images/like.svg);
-    margin-right: 10px;
 }
 
 .item .item_image .item_like {

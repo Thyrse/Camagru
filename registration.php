@@ -1,3 +1,7 @@
+<?php
+require_once('config/config.php');
+require_once('class/register.class.php');
+?>
 <!DOCTYPE html>
 <html>
 
@@ -66,6 +70,24 @@
                     <button type="submit" name="submit">S'inscrire</button>
                 </div>
             </form>
+            <?php
+                if(isset($_POST['register']))
+                {
+                    $username = $_POST['username'];
+                    $password = $_POST['password'];
+                    $confirm = $_POST['confirmpassword'];
+                    $email = $_POST['email'];
+                    
+                    $inscription = new register;
+                    $inscription->setUsername($username);
+                    $inscription->setEmail($email);
+                    $inscription->setPassword($password);
+                    $inscription->setConfirmpass($confirm);
+                    // $inscription->setToken();
+                    $inscription->register();
+                    echo $inscription->status;
+                }
+                ?>
         </div>
     </div>
     <footer>

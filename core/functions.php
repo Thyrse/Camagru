@@ -51,7 +51,7 @@ function 	create_category($link, $name) {
 	return ("Mauvais identifiants de la base de données !");
 }
 
-function 	create_product($link, $name, $desc, $price, $qte, $img, $cat) {
+function 	create_article($link, $name, $desc, $price, $qte, $img, $cat) {
 		$req = "SELECT COUNT(*) FROM product WHERE name = ".$name."";
 		$query = mysqli_query($link, $req);
 		if (mysqli_num_rows($query) > 0)

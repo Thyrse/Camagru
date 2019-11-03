@@ -81,7 +81,7 @@ if (isset($_POST['login'])) {
     <div><a href="../account.php">Informations du compte</a></div>
         <?php if (check_admin($link, $_SESSION['idUser'])) { ?>
         <div><a href="create_category.php">Créer une catégorie</a></div>
-        <div><a href="create_product.php">Ajouter un produit</a></div>
+        <div><a href="create_article.php">Ajouter un produit</a></div>
         <div><a href="products_list.php">Modifier un produit</a></div>
         <div><a href="users_list.php">Modifier un utilisateur</a></div>
         <?php } ?>

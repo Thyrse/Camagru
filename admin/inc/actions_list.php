@@ -5,7 +5,7 @@
 
             <div class="category-list">
                 <ul>
-                    <li><a href="create_product.php">Créer un produit</a></li>
+                    <li><a href="create_article.php">Créer un produit</a></li>
                     <li><a href="create_category.php">Créer une catégorie</a></li>
                     <li><a href="products_list.php">Liste des produits</a></li>
                     <li><a href="users_list.php">Liste des utilisateurs</a></li>

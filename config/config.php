@@ -1,4 +1,4 @@
 <?php
 session_start();
-$bdd = new PDO('mysql:host=localhost;dbname=camagru;charset=utf8', 'root', 'rootroot');
+$bdd = new PDO('mysql:host=localhost;dbname=camagru', 'root', 'rootroot', array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
 ?>

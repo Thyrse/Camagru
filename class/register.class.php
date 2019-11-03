@@ -49,11 +49,11 @@ class Register
                 $result = $select_users->fetch();
                 if($result['username'] == NULL)
                 {
-                    $data = date("y-m-d");
+                    // $data = date("y-m-d");
                     $password = hash('whirlpool', 'terry la star'. $this->password);
-                    $insert = $bdd->prepare("INSERT INTO users(`username`,`password`,`email`) VALUES(`:username`, `:password`, `:email`)");
+                    $insert = $bdd->prepare("INSERT INTO users(username,password,email) VALUES(:username, :password, :email)");
                     $insert->bindParam(':username', $this->username);
-                    $insert->bindParam(':password', $this->password);
+                    $insert->bindParam(':password', $password);
                     $insert->bindParam(':email', $this->email);
                     // $insert->bindParam(':token', $this->token);
                     // $insert->bindParam(':creation_date', $data);

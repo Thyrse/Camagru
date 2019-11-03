@@ -162,14 +162,14 @@ a {
 }
 
 .items-list .item {
-    max-width: 900px;
+    max-width: 750px;
     box-shadow: 0px 0px 15px -12px #000000;
     border-radius: 5px;
     margin: 3px;
     background-color: #ffffff;
     display: flex;
     position: relative;
-    height: 600px;
+    height: 500px;
 }
 
 .items-list .item img {
@@ -693,6 +693,7 @@ footer {
     padding: 5px;
     width: 250px;
     right: 5px;
+    z-index: 999;
 }
 
 .toggle.toggle_user h3 {

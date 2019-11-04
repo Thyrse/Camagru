@@ -48,12 +48,57 @@ elseif(isset($_POST['login']))
 
 elseif(isset($_POST['create_article']))
 {
-    $image = $_POST['image'];
     $description = $_POST['description'];
-
+    $user = $_SESSION['user'];
+    $test_img = $_FILES['image_article'];
+    var_dump($_FILES['image_article']);
     $article = new Article;
-    $article->setUsername($image);
-    $article->setEmail($description);
+    $extension = array('jpg','jpeg','png', 'JPG', 'PNG', 'JPEG');
+    if((!empty($_FILES["image_article"])) && ($_FILES['image_article']['error'] == 0))
+    {
+        $filename = basename($_FILES['image_article']['name']);
+        $checkbackdoor = explode(".", $filename);
+        if(count($checkbackdoor) - 1 > 1)
+        {
+            echo "Problem dans le fichier";
+        }
+        else
+        {
+            $ext = substr($filename, strrpos($filename, '.') + 1);
+            if (in_array($ext, $extension) && ($_FILES["image_article"]["type"] == "image/jpeg") && ($_FILES["image_article"]["size"] < 350000))
+            {
+                $newname = dirname(__FILE__).'/assets/images/'.$filename;
+                if (!file_exists($newname))
+                {
+                    if ((move_uploaded_file($_FILES['image_article']['tmp_name'],$newname)))
+                    {
+                        $article->setImage($filename);
+                        echo "Photo de profil bien modifié";
+                    }
+                    else
+                    {
+                        echo "Impossible d'upload le fichier .";
+                    }
+                }
+                else
+                {
+      // existe deja
+                    $article->setImage($filename);
+                    echo "Photo de profil bien modifié";
+                }
+            }
+            else
+            {
+                echo "Fichier pas au bon format";
+            }
+        }
+    }
+    else
+    {
+        echo "Error: No file uploaded";
+    }
+    $article->setDescription($description);
+    $article->setUser($user);
     $article->article();
     if($article->status == "ok")
         header('location: index.php');
@@ -63,5 +108,6 @@ elseif(isset($_POST['create_article']))
         echo "NON";
     }
 }
+
 
 ?>

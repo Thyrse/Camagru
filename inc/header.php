@@ -1,6 +1,6 @@
 <div class="header_insta">
     <div>
-        <button class="preview_insta"><a href="#">Nouveau</a></button>
+        <button class="preview_insta"><a href="../create_article.php">Nouveau</a></button>
     </div>
 </div>
 <div class="header_logo">

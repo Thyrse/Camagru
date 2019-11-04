@@ -25,32 +25,13 @@ if(isset($_SESSION['user']))
                     <label for="description">Légende : </label>
                     <textarea name="description" rows="8" cols="21" placeholder="Description..." required></textarea>
                     <label for="image">Image :</label>
-                    <textarea name="image" rows="8" cols="21" placeholder="Description..." required></textarea>
-                    <!-- <input type="file" name="image" required> -->
+                    <input type="file" name="image_article" required>
                 </div>
                 <div class="create_button">
                     <button type="submit" name="create_article" value="">Publier la photo</button>
                 </div>
             </form>
-
-
-            <form name="submit" method="post" action="action.php">
-                <div class="user_registration">
-                    <label for="username">Pseudo :</label>
-                    <input type="text" name="username" maxlength="10" placeholder="Ex: Tintin, Harambe..." required>
-                    <label for="email">Email :</label>
-                    <input type="email" name="email" maxlength="30" placeholder="Email" required>
-                    <label for="password">Mot de passe :</label>
-                    <input type="password" name="password" maxlength="20" placeholder="Unique pour ce site..." required>
-                    <label>Confirmer le mot de passe :</label>
-                    <input type="password" name="password_confirm" maxlength="20" placeholder="Retapez le mot de passe..." required>
-                </div>
-                <div class="create_button">
-                    <button type="submit" name="create_account" value="">S'inscrire</button>
-                </div>
-            </form>
         </div>
-
     </div>
     <footer>
         <div id="footer">

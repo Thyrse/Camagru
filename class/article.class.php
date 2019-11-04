@@ -7,18 +7,36 @@ class Article
     
     function setImage($image)
     {
-            $this->image = $image;
+        $this->image = $image;
     }
     function setDescription($description)
     {
+        if($description != "")
             $this->description = $description;
+    }
+    function setUser($user)
+    {
+        if($user != "")
+            $this->user = $user;
+    }
+
+    function getImage($image)
+    {
+        return $this->image;
+    }
+    function getDescription($description)
+    {
+        return $this->description;
+    }
+    function getUser($user)
+    {
+        return $this->user;
     }
     // function setToken()
     // {
     //     $token = rand('9999999','999999999999999');
     //     $this->token = $token;
     // }
-    
     function article()
     {
         // public function addTweet()
@@ -29,10 +47,22 @@ class Article
         //     $this->addHashtag();
         // }
         global $bdd;
-           $insert = $bdd->prepare("INSERT INTO publication(image, description) VALUES(:image, :description)");
-           $insert->bindParam(':image', $this->image);
-           $insert->bindParam(':description', $this->description);
-           $insert->execute();
+        if($this->description != NULL)
+        {
+           $article = $bdd->prepare("INSERT INTO publication(image, description, id_user) VALUES(:image, :description, :user)");
+           $article->bindParam(':image', $this->image);
+           $article->bindParam(':description', $this->description);
+           $article->bindParam(':user', $this->user);
+           $article->execute();
            $this->status = "ok";
+        }
+    }
+
+    function getTimeLine()
+    {
+        global $bdd;
+        $all = $bdd->prepare('SELECT `publication`.`image`,`publication`.`description`, `users`.`username` FROM `publication` INNER JOIN `users` ON `publication`.`id_user` = `users`.`id`');
+        $all->execute();
+        return $all;
     }
 }

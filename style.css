@@ -85,6 +85,11 @@ a {
     text-decoration: inherit;
 }
 
+.header_insta,
+.header_sign .infos_user {
+    cursor: pointer;
+}
+
 .preview_insta::after {
     content: url("assets/images/picture.svg");
     width: 25px;

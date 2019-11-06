@@ -3,6 +3,10 @@ require_once('config/config.php');
 require_once('class/register.class.php');
 require_once('class/connect.class.php');
 require_once('class/article.class.php');
+require_once('class/user.class.php');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
 
 if(isset($_POST['create_account']))
 {
@@ -45,7 +49,6 @@ elseif(isset($_POST['login']))
         }
     }
 }
-
 elseif(isset($_POST['create_article']))
 {
     $description = $_POST['description'];
@@ -108,6 +111,43 @@ elseif(isset($_POST['create_article']))
         echo "NON";
     }
 }
-
-
+elseif(isset($_POST['insert_comment']))
+{
+    $content = $_POST['commentary_content'];
+    $user = $_SESSION['user'];
+    $article_id = $_POST['article_id'];
+    $commentary = new Article;
+    $commentary->setUser($user);
+    $commentary->setContent($content);
+    $commentary->setPublication($article_id);
+    $commentary->addCommentary();
+    if($commentary->status == "ok")
+        header('location: create_article.php');
+    else
+    {
+        echo $commentary->status;
+        echo "Bah non";
+    }
+}
+elseif(isset($_POST['account_update']))
+{
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $confirm_password = $_POST['confirm_password'];
+    $user = $_SESSION['user'];
+    echo $confirm_password;
+    $update = new Userinfo;
+    $update->setUsername($username);
+    $update->setEmail($email);
+    $update->setPassword($confirm_password);
+    $update->setUser($user);
+    $update->update();
+    if($update->status == "ok")
+        header('location: create_article.php');
+    else
+    {
+        echo $update->status;
+        echo "Bah non";
+    }
+}
 ?>

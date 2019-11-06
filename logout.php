@@ -1,7 +1,10 @@
 <?php
-
+session_start();
+session_unset();
+session_destroy();
+$_SESSION['user'] = false;
+header('Location: index.php');
 if ( isset($_GET['action']) && $_GET['action'] == "logout" ) {
-	$logout = mysqli_query( $link, "UPDATE users SET logged = 0 WHERE idUser = '".$_SESSION['idUser']."'");
 	session_destroy();
 }
 

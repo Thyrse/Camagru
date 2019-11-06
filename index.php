@@ -6,8 +6,7 @@ if(isset($_SESSION['user']))
     $user = new Userinfo($_SESSION['user']);
 
 $articles = new Article();
-$articles->getTimeLine();
-var_dump($articles);
+$results = $articles->getTimeLine();
 ?>
 <!DOCTYPE html>
 <html>
@@ -31,100 +30,38 @@ var_dump($articles);
                 <div class="item_empty">
                     <p>Rien à afficher, revenez plus tard...</p>
                 </div>
+                <?php foreach($results as $row) { 
+                    $comments = $articles->getCommentary($row['id']);?>                               
                     <div class="item">
                     <div class="item_image">
-                        <img src="assets/images/illu.jpg">
+                        <img src="assets/images/<?= $row['image'] ?>">
                         <form name="submit" method="post" action="" enctype="multipart/form-data">
                             <button class="item_like"></button>
                         </form>
                     </div>
                     <div class="item_desc">
                         <div class="item_author">
-                            <span><em><b>Ziphlot</b></em></span>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam rerum rem hic quia! Neque, similique error. Soluta porro, illo iusto, ullam sequi officiis, consectetur ratione maxime cupiditate sunt sapiente quam.</p>
+                            <span><em><b><?= $row['username'] ?></b></em></span>
+                            <p><?=$row['description']?></p>
                         </div>
                         <div class="item_scroll">
+                        <?php foreach($comments as $com) { ?>
                             <div class="item_commentary">
-                                <span>Thyrse</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto reiciendis ab molestias sed et minus dolore fugit veniam asperiores aperiam nisi eveniet quia provident voluptate soluta tempora, esse quos nobis!</p>
+                                <span><?= $com['username'] ?></span>
+                                <p><?= $com['content'] ?></p>
                             </div>
-                            <div class="item_commentary">
-                                <span>Thyrse</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto reiciendis ab molestias sed et minus dolore fugit veniam asperiores aperiam nisi eveniet quia provident voluptate soluta tempora, esse quos nobis!</p>
-                            </div>
-                            <div class="item_commentary">
-                                <span>Thyrse</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto reiciendis ab molestias sed et minus dolore fugit veniam asperiores aperiam nisi eveniet quia provident voluptate soluta tempora, esse quos nobis!</p>
-                            </div>
-                            <div class="item_commentary">
-                                <span>Thyrse</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto reiciendis ab molestias sed et minus dolore fugit veniam asperiores aperiam nisi eveniet quia provident voluptate soluta tempora, esse quos nobis!</p>
-                            </div>
-                            <div class="item_commentary">
-                                <span>Thyrse</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto reiciendis ab molestias sed et minus dolore fugit veniam asperiores aperiam nisi eveniet quia provident voluptate soluta tempora, esse quos nobis!</p>
-                            </div>
-                            <div class="item_commentary">
-                                <span>Thyrse</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto reiciendis ab molestias sed et minus dolore fugit veniam asperiores aperiam nisi eveniet quia provident voluptate soluta tempora, esse quos nobis!</p>
-                            </div>
+                        <?php  } ?>
                         </div>
                         <div class="item_area">
-                            <form name="submit" method="post" action="" enctype="multipart/form-data">
-                                <textarea name="desc" rows="8" cols="21" placeholder="Votre commentaire..." required></textarea>
-                                <button type="submit">Publier</button>
+                            <form name="submit" method="post" action="action.php?id">
+                                <textarea name="commentary_content" rows="8" cols="21" placeholder="Votre commentaire..." required></textarea>
+                                <input type="hidden" name="article_id" value="<?= $row['id'] ?>"/>
+                                <button type="submit" name="insert_comment">Publier</button>
                             </form>
                         </div>
                     </div>
                 </div>
-
-                <div class="item">
-                    <div class="item_image">
-                        <img src="assets/images/illu.jpg">
-                        <form name="submit" method="post" action="" enctype="multipart/form-data">
-                            <button class="item_like"></button>
-                        </form>
-                    </div>
-                    <div class="item_desc">
-                        <div class="item_author">
-                            <span><em><b>Ziphlot</b></em></span>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat dignissimos odio praesentium magnam debitis, assumenda dicta cupiditate quo explicabo possimus accusamus eligendi iste consectetur, necessitatibus totam, voluptatem
-                                quidem ea illo!</p>
-                        </div>
-                        <div class="item_scroll">
-                            <div class="item_commentary">
-                                <span>Thyrse</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto reiciendis ab molestias sed et minus dolore fugit veniam asperiores aperiam nisi eveniet quia provident voluptate soluta tempora, esse quos nobis!</p>
-                            </div>
-                            <div class="item_commentary">
-                                <span>Thyrse</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto reiciendis ab molestias sed et minus dolore fugit veniam asperiores aperiam nisi eveniet quia provident voluptate soluta tempora, esse quos nobis!</p>
-                            </div>
-                            <div class="item_commentary">
-                                <span>Thyrse</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto reiciendis ab molestias sed et minus dolore fugit veniam asperiores aperiam nisi eveniet quia provident voluptate soluta tempora, esse quos nobis!</p>
-                            </div>
-                            <div class="item_commentary">
-                                <span>Thyrse</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto reiciendis ab molestias sed et minus dolore fugit veniam asperiores aperiam nisi eveniet quia provident voluptate soluta tempora, esse quos nobis!</p>
-                            </div>
-                            <div class="item_commentary">
-                                <span>Thyrse</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto reiciendis ab molestias sed et minus dolore fugit veniam asperiores aperiam nisi eveniet quia provident voluptate soluta tempora, esse quos nobis!</p>
-                            </div>
-                            <div class="item_commentary">
-                                <span>Thyrse</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto reiciendis ab molestias sed et minus dolore fugit veniam asperiores aperiam nisi eveniet quia provident voluptate soluta tempora, esse quos nobis!</p>
-                            </div>
-                        </div>
-                        <div class="item_area">
-                            <form name="submit" method="post" action="" enctype="multipart/form-data">
-                                <textarea name="desc" rows="8" cols="21" placeholder="Votre commentaire..." required></textarea>
-                                <button type="submit">Publier</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+           <?php  } ?>
             </div>
         </div>
     </div>

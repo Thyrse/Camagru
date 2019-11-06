@@ -1,10 +1,13 @@
+<?php
+include('core/restrict.php');
+?>
 <div class="header_insta">
     <div>
         <button class="preview_insta"><a href="../create_article.php">Nouveau</a></button>
     </div>
 </div>
 <div class="header_logo">
-    <a href="#"><img src="assets/images/logo.png"></a>
+    <a href="index.php"><img src="assets/images/logo.png"></a>
 </div>
 <div class="header_sign">
 <?php if (isset($_SESSION['user'])) { ?>
@@ -35,7 +38,7 @@
 <div class="toggle toggle_user" id="toggle_user">
     <h3>Votre compte</h3>
     <div class="user_actions">
-        <div><a href="#">Informations du compte</a></div>
+        <div><a href="account.php">Informations du compte</a></div>
         <div><a href="#">Créer une catégorie</a></div>
         <div><a href="#">Ajouter un produit</a></div>
         <div><a href="#">Modifier un produit</a></div>

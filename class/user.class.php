@@ -5,8 +5,9 @@ class Userinfo
     private $username;
     private $email;
     private $password;
+    private $user;
     
-    public function __construct($username)
+    public function __construct($username = null)
     {
         global $bdd;
         $select_info = $bdd->prepare("SELECT * FROM users WHERE id = :username");
@@ -22,44 +23,74 @@ class Userinfo
         }
     }
 
-    function getUsername()
-    {
-        return $this->username;
-    }
-
-    function getEmail()
-    {
-        return $this->email;
-    }
-
     function setUsername($username)
     {
         $this->username = $username;
     }
-
     function setEmail($email)
     {
         $this->email = $email;
     }
-
-    function Update()
+    function setUser($user)
+	{
+		$this->user = $user;
+	}
+    function setPassword($password)
     {
-        global $bdd;
-        $update = $bdd->prepare("UPDATE users SET username = :username, password = :password, email = :email WHERE id = :id_user");
-        $update->bindParam(':username', $this->username);
-        $update->bindParam(':password', $this->password);
-        $update->bindParam(':email', $this->email);
-        $update->bindParam(':id_user', $this->id_user);
-        $update->execute();
+        $this->password = $password;
     }
 
-    // function getTweet()
-    // {
-    //     global $bdd;
-    //     $a = $bdd->prepare("SELECT * from tweets where id_user = :id");
-    //     $a->execute(["id" => $this->id_user]);
-    //      $a = $a->fetchAll(PDO::FETCH_OBJ);
-    //     return $a;
-    // }
+    function getUsername()
+    {
+        return $this->username;
+    }
+    function getEmail()
+    {
+        return $this->email;
+    }
+    function getUser()
+	{
+		return $this->user;
+	}
+    function getPassword()
+    {
+        return $this->password;
+    }
+
+    function update()
+    {
+        global $bdd;
+        if($this->username != NULL)
+        {
+            $password = hash('whirlpool', 'terry la star'.$this->password);
+            $update = $bdd->prepare("UPDATE users SET username = :username, email = :email WHERE id = :id_user AND password = :password");
+            $update->bindParam(':username', $this->username);
+            $update->bindParam(':password', $password);
+            $update->bindParam(':email', $this->email);
+            $update->bindParam(':id_user', $this->user);
+            try {
+                $update->execute();
+                $count = $update->rowCount();
+                if ($count > 0)
+                    $this->status = "ok";
+                else
+                    $this->status = "Non";
+            }
+            catch (PDOException $e) {
+                echo $e->getCode();
+                if($e->getCode() == 23000)
+                {
+                    echo "L'utilisateur existe déjà !";
+                }
+                else
+                {
+                    echo "Une erreur est survenue";
+                }
+                die($e->getMessage());
+                echo $e;
+            }
+        }
+    }
+
 }
 ?>

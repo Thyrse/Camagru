@@ -143,11 +143,30 @@ elseif(isset($_POST['account_update']))
     $update->setUser($user);
     $update->update();
     if($update->status == "ok")
+        header('location: index.php');
+    else
+    {
+        header('location: account.php');
+    }
+}
+elseif(isset($_POST['password_update']))
+{
+    $old_pwd = $_POST['old_password'];
+    $new_pwd = $_POST['new_password'];
+    $confirm_new = $_POST['confirm_new'];
+    $user = $_SESSION['user'];
+    echo $user;
+    $updatepwd = new Userinfo;
+    $updatepwd->setPassword($old_pwd);
+    $updatepwd->setPwdreplace($new_pwd);
+    $updatepwd->setConfirmpass($confirm_new);
+    $updatepwd->setUser($user);
+    $updatepwd->updatepwd();
+    if($updatepwd->status == "ok")
         header('location: create_article.php');
     else
     {
-        echo $update->status;
-        echo "Bah non";
+        header('location: create_article.php');
     }
 }
 ?>

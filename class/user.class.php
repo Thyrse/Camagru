@@ -6,6 +6,9 @@ class Userinfo
     private $email;
     private $password;
     private $user;
+    private $pwdconfirm;
+    private $pwdreplace;
+    public $status;
     
     public function __construct($username = null)
     {
@@ -39,6 +42,15 @@ class Userinfo
     {
         $this->password = $password;
     }
+    function setPwdreplace($pwdreplace)
+    {
+        $this->pwdreplace = $pwdreplace;
+    }
+    function setConfirmpass($pwdconfirm)
+    {
+        if($pwdconfirm != "")
+            $this->pwdconfirm = $pwdconfirm;
+    }
 
     function getUsername()
     {
@@ -55,6 +67,14 @@ class Userinfo
     function getPassword()
     {
         return $this->password;
+    }
+    function getPwdreplace()
+    {
+        return $this->pwdreplace;
+    }
+    function getConfirmpass()
+    {
+        return $this->pwdconfirm;
     }
 
     function update()
@@ -77,18 +97,48 @@ class Userinfo
                     $this->status = "Non";
             }
             catch (PDOException $e) {
-                echo $e->getCode();
                 if($e->getCode() == 23000)
                 {
-                    echo "L'utilisateur existe déjà !";
+                    $_SESSION['error'] = "L'utilisateur existe déjà !";
                 }
                 else
                 {
-                    echo "Une erreur est survenue";
+                    $_SESSION['error'] = "Une erreur est survenue";
                 }
-                die($e->getMessage());
-                echo $e;
             }
+        }
+    }
+    function updatepwd()
+    {
+        global $bdd;
+       if($this->password != NULL)
+       {
+           if($this->pwdreplace == $this->pwdconfirm)
+           {
+                $password = hash('whirlpool', 'terry la star'.$this->password);
+                $pwdreplace = hash('whirlpool', 'terry la star'. $this->pwdreplace);
+                $update = $bdd->prepare("UPDATE users SET password = :newpwd WHERE id = :id_user AND password = :password");
+                $update->bindParam(':newpwd', $pwdreplace);
+                $update->bindParam(':password', $password);
+                $update->bindParam(':id_user', $this->user);
+                try {
+                    $update->execute();
+                    $update->rowCount() ? $this->status = "ok" : $this->status = "non";
+                }
+                catch (PDOException $e) {
+                    echo $e->getCode();
+                    if($e->getCode() == 23000)
+                    {
+                        $_SESSION['error'] = "L'utilisateur existe déjà !";
+                    }
+                    else
+                    {
+                        echo "Une erreur est survenue";
+                    }
+                    die($e->getMessage());
+                    echo $e;
+               }
+           }
         }
     }
 

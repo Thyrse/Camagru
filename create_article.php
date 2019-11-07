@@ -2,7 +2,13 @@
 require_once('config/config.php');
 require_once('class/user.class.php');
 if(isset($_SESSION['user']))
+{
     $user = new Userinfo($_SESSION['user']);
+}
+else
+{
+    header('location: registration.php');
+}
 ?>
 <!DOCTYPE html>
 <html>

@@ -1,3 +1,10 @@
+<?php
+require_once('config/config.php');
+require_once('class/user.class.php');
+if(isset($_SESSION['user']))
+    header('location: index.php');
+
+?>
 <!DOCTYPE html>
 <html>
 

@@ -26,7 +26,6 @@ else
     <div id="main">
         <div class="create create_user">
             <h3>Informations de compte</h3>
-            <?php if(isset($_SESSION['error'])){ echo '<h3>'.$_SESSION['error'].'</h3>'; $_SESSION['error'] = false;} ?>
             <form name="submit" method="post" action="action.php">
                 <div class="user_registration">
                     <label for="username">Nom d'utilisateur :</label>
@@ -35,6 +34,10 @@ else
                     <input type="email" name="email" maxlength="30" placeholder="Email" value="<?= $user->getEmail(); ?>" required>
                     <label for="confirm_password">Confirmer le mot de passe :</label>
                     <input type="password" name="confirm_password" maxlength="20" placeholder="Retapez le mot de passe..." required>
+                    <?php if(isset($_SESSION['account']) && $_SESSION['account'] !== false) { 
+                    echo '<span class="msg_error">'.$_SESSION['account'].'</span>'; $_SESSION['account'] = false; }
+                    elseif(isset($_SESSION['successa']) && $_SESSION['successa'] !== false) { 
+                        echo '<span class="msg_success">'.$_SESSION['successa'].'</span>'; $_SESSION['successa'] = false; } ?>
                 </div>
                 <div class="create_button">
                     <button type="submit" name="account_update">Modifier</button>
@@ -52,6 +55,10 @@ else
                     <input type="password" name="new_password" maxlength="20" placeholder="Nouveau..." required>
                     <label for="confirm_new">Confirmation :</label>
                     <input type="password" name="confirm_new" maxlength="20" placeholder="Confirmation..." required>
+                    <?php if(isset($_SESSION['passwd']) && $_SESSION['passwd'] !== false) { 
+                    echo '<span class="msg_error">'.$_SESSION['passwd'].'</span>'; $_SESSION['passwd'] = false; }
+                    elseif(isset($_SESSION['successp']) && $_SESSION['successp'] !== false) { 
+                        echo '<span class="msg_success">'.$_SESSION['successp'].'</span>'; $_SESSION['successp'] = false; }?>
                 </div>
                 <div class="create_button">
                     <button type="submit" name="password_update">Modifier</button>

@@ -31,12 +31,16 @@ $results = $articles->getTimeLine();
                     <p>Rien à afficher, revenez plus tard...</p>
                 </div>
                 <?php foreach($results as $row) { 
-                    $comments = $articles->getCommentary($row['id']);?>                               
+                    $comments = $articles->getCommentary($row['id']);
+                    $likes = $articles->getLike($row['id']);
+                    $liked = $articles->getLiked($row['id']);?>                               
                     <div class="item">
                     <div class="item_image">
                         <img src="assets/images/<?= $row['image'] ?>">
-                        <form name="submit" method="post" action="" enctype="multipart/form-data">
-                            <button class="item_like"></button>
+                        <span class="item_nblike"><?= $likes ?><?= var_dump($liked); ?></span>
+                        <form name="opinion" method="post" action="action.php" enctype="multipart/form-data">
+                            <input type="hidden" name="article_id" value="<?= $row['id'] ?>"/>
+                            <button type="submit" class="item_like" name="opinion"></button>
                         </form>
                     </div>
                     <div class="item_desc">
@@ -53,7 +57,7 @@ $results = $articles->getTimeLine();
                         <?php  } ?>
                         </div>
                         <div class="item_area">
-                            <form name="submit" method="post" action="action.php?id">
+                            <form name="submit" method="post" action="action.php">
                                 <textarea name="commentary_content" rows="8" cols="21" placeholder="Votre commentaire..." required></textarea>
                                 <input type="hidden" name="article_id" value="<?= $row['id'] ?>"/>
                                 <button type="submit" name="insert_comment">Publier</button>

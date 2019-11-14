@@ -3,7 +3,6 @@ class Connect
 {
     private $username;
     private $password;
-    public $status;
     
     function setUsername($username)
     {
@@ -27,16 +26,14 @@ class Connect
             $select->bindParam(':password', $password);
             $select->execute();
             $result = $select->fetch();
-            echo $select->fetch();
             if($result['username'] != NULL)
             {
                 $_SESSION['user'] = $result['id'];
-                $this->status = "ok";
             }
             else
-                $this->status = "Utilisateur inconnu.";
+                $_SESSION['error'] = "Utilisateur ou mot de passe incorrect.";
         }
         else
-            $this->status = "Des champs sont vides.";
+            $_SESSION['error'] = "Veillez à remplir tous les champs.";
     }
 }

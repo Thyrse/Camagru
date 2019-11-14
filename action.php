@@ -22,13 +22,7 @@ if(isset($_POST['create_account']))
     $inscription->setConfirmpass($confirm);
     // $inscription->setToken();
     $inscription->register();
-    if($inscription->status == "ok")
-        header('location: index.php');
-    else
-    {
-        echo $inscription->status;
-        echo "NON";
-    }
+    header('location: registration.php');
 }
 elseif(isset($_POST['login']))
 {
@@ -38,15 +32,7 @@ elseif(isset($_POST['login']))
         $connexion->setUsername($_POST['username']);
         $connexion->setPassword($_POST['password']);
         $connexion->connect();
-        if($connexion->status == "ok")
-            header('location: create_article.php');
-        else
-        {
-            echo $_POST['username'];
-            echo $_POST['password'];
-            echo $connexion->status;
-            echo "Bah non";
-        }
+        header('location: index.php');
     }
 }
 elseif(isset($_POST['create_article']))
@@ -142,12 +128,7 @@ elseif(isset($_POST['account_update']))
     $update->setPassword($confirm_password);
     $update->setUser($user);
     $update->update();
-    if($update->status == "ok")
-        header('location: index.php');
-    else
-    {
-        header('location: account.php');
-    }
+    header('location: account.php');
 }
 elseif(isset($_POST['password_update']))
 {
@@ -162,11 +143,16 @@ elseif(isset($_POST['password_update']))
     $updatepwd->setConfirmpass($confirm_new);
     $updatepwd->setUser($user);
     $updatepwd->updatepwd();
-    if($updatepwd->status == "ok")
-        header('location: create_article.php');
-    else
-    {
-        header('location: create_article.php');
-    }
+    header('location: account.php');
+}
+elseif(isset($_POST['opinion']))
+{
+    $user = $_SESSION['user'];
+    $article_id = $_POST['article_id'];
+    $commentary = new Article;
+    $commentary->setUser($user);
+    $commentary->setPublication($article_id);
+    $commentary->addLike();
+    header('location: index.php');
 }
 ?>

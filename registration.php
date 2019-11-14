@@ -31,6 +31,12 @@ if(isset($_SESSION['user']))
                     <input type="password" name="password" maxlength="20" placeholder="Unique pour ce site..." required>
                     <label>Confirmer le mot de passe :</label>
                     <input type="password" name="password_confirm" maxlength="20" placeholder="Retapez le mot de passe..." required>
+                    <?php if(isset($_SESSION['error_reg']) && $_SESSION['error_reg'] !== false): ?>
+                        <span class="msg_error"><?= $_SESSION['error_reg'] ?></span><?php $_SESSION['error_reg'] = false; ?>
+                    <?php elseif (isset($_SESSION['success']) && $_SESSION['success'] !== false): ?>
+                        <span class="msg_success"><?= $_SESSION['success'] ?></span><?php $_SESSION['success'] = false; ?>
+                    <?php endif ?>
+                    
                 </div>
                 <div class="create_button">
                     <button type="submit" name="create_account" value="">S'inscrire</button>

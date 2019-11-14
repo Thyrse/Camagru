@@ -32,6 +32,8 @@ include('core/restrict.php');
         <div class="toggle_button">
             <button type="submit" name="login" value="login">Connexion</button>
         </div>
+        <?php if(isset($_SESSION['error']) && $_SESSION['error'] !== false) { 
+                    echo '<span class="msg_error">'.$_SESSION['error'].'</span>'; $_SESSION['error'] = false; } ?>
     </form>
 </div>
 <!-- MENU UNE FOIS CONNECTÉ -->

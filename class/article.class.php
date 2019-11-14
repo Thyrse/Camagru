@@ -100,4 +100,53 @@ class Article
 		$allcomments = $comments->fetchAll();
 		return $allcomments;
 	}
+
+	function getLike($id)
+	{
+		global $bdd;
+		$likes = $bdd->prepare('SELECT COUNT(`id_user`) as total FROM `opinion` WHERE `id_publication` = :id');
+		$likes->bindParam(':id', $id);
+		$likes->execute();
+		$alllikes = $likes->fetch();
+		return $alllikes['total'];
+	}
+
+	function getLiked($id)
+	{
+		global $bdd;
+		$liked = $bdd->prepare('SELECT `id_user` FROM `opinion` WHERE `id_publication` = :id');
+		$liked->bindParam(':id', $id);
+		$liked->execute();
+		$alllikes = $liked->fetch();
+		return $alllikes;
+		// if($alllikes['id_user'] == $this->user)
+		// 	return $this->status = 1;
+		// else
+		// 	return $this->status = 0;
+	}
+
+
+	function addLike()
+	{
+		global $bdd;
+		$select_likes = $bdd->prepare("SELECT * FROM `opinion` WHERE `id_user` = :id_user AND `id_publication` = :id_publication");
+		$select_likes->bindParam(':id_user', $this->user);
+		$select_likes->bindParam(':id_publication', $this->publication);
+		$select_likes->execute();
+		$result = $select_likes->fetch();
+		if($result['id_user'] == NULL)
+		{
+			$opinion = $bdd->prepare("INSERT INTO `opinion`(`id_user`, `id_publication`) VALUES(:id_user, :id_publication)");
+			$opinion->bindParam(':id_user', $this->user);
+			$opinion->bindParam(':id_publication', $this->publication);
+			$opinion->execute();
+		}
+		else
+		{
+			$opinion = $bdd->prepare("DELETE FROM `opinion` WHERE `id_user` = :id_user AND `id_publication` = :id_publication");
+			$opinion->bindParam(':id_user', $this->user);
+			$opinion->bindParam(':id_publication', $this->publication);
+			$opinion->execute();
+		}
+	}
 }

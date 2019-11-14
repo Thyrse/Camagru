@@ -6,7 +6,6 @@ class Register
     private $password;
     private $confirmation_password;
     // private $token;
-    public $status;
     
     
     function setUsername($username)
@@ -58,13 +57,15 @@ class Register
                     // $insert->bindParam(':token', $this->token);
                     // $insert->bindParam(':creation_date', $data);
                     $insert->execute();
-                    $this->status = "ok";
+                    $_SESSION['success'] = "Utilisateur créé.";
                 }
                 else
-                    $this->status = "Utilisateur déjà existant.";
+                    $_SESSION['error_reg'] = "Pseudo déjà pris.";
             }
             else
-                $this->status = "Les mots de passe ne correspondent pas !";
+                $_SESSION['error_reg'] = "Les mots de passe ne correspondent pas !";
         }
+        else
+            $_SESSION['error_reg'] = "Une erreur est survenue.";
     }
 }

@@ -33,15 +33,24 @@ $results = $articles->getTimeLine();
                 <?php foreach($results as $row) { 
                     $comments = $articles->getCommentary($row['id']);
                     $likes = $articles->getLike($row['id']);
-                    $liked = $articles->getLiked($row['id']);?>                               
+                    $liked = $articles->getLiked($row['id'], $_SESSION['user']);?>                               
                     <div class="item">
                     <div class="item_image">
                         <img src="assets/images/<?= $row['image'] ?>">
-                        <span class="item_nblike"><?= $likes ?><?= var_dump($liked); ?></span>
-                        <form name="opinion" method="post" action="action.php" enctype="multipart/form-data">
-                            <input type="hidden" name="article_id" value="<?= $row['id'] ?>"/>
-                            <button type="submit" class="item_like" name="opinion"></button>
-                        </form>
+                        <span class="item_nblike"><?= $likes ?></span>
+                    <?php if(isset($_SESSION['user'])) : ?>
+                        <?php if($liked['id_user']) : ?>
+                            <form name="opinion" method="post" action="action.php" enctype="multipart/form-data">
+                                <input type="hidden" name="article_id" value="<?= $row['id'] ?>"/>
+                                <button type="submit" class="item_like item_liked" name="opinion"></button>
+                            </form>
+                        <?php elseif(!$liked['id_user']) : ?>
+                            <form name="opinion" method="post" action="action.php" enctype="multipart/form-data">
+                                <input type="hidden" name="article_id" value="<?= $row['id'] ?>"/>
+                                <button type="submit" class="item_like" name="opinion"></button>
+                            </form>
+                        <?php endif ?>
+                    <?php endif ?>
                     </div>
                     <div class="item_desc">
                         <div class="item_author">

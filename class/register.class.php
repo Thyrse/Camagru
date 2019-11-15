@@ -5,7 +5,10 @@ class Register
     private $email;
     private $password;
     private $confirmation_password;
-    // private $token;
+    private $message;
+    private $subject;
+    private $entete;
+    private $token;
     
     
     function setUsername($username)
@@ -28,12 +31,25 @@ class Register
         if($confirm != "")
             $this->confirmation_password = $confirm;
     }
-    // function setToken()
-    // {
-    //     $token = rand('9999999','999999999999999');
-    //     $this->token = $token;
-    // }
-    
+
+    function setToken()
+    {
+        $token = rand('9999999','999999999999999');
+        $this->token = $token;
+    }
+    function setMessage()
+    {
+        $message = "Bonjour, voici un nouveau mail ! http://localhost:8100/activation.php?token=".$this->token;
+        $this->message = $message;
+    }
+    function setSubject()
+    {
+        $this->subject = "Activation de votre compte";
+    }
+    function setEntete()
+    {
+        $this->entete = "Content-type: text/html; charset=utf-8";
+    }
     function register()
     {
         global $bdd;
@@ -57,6 +73,7 @@ class Register
                     // $insert->bindParam(':token', $this->token);
                     // $insert->bindParam(':creation_date', $data);
                     $insert->execute();
+                    mail($this->email, $this->subject, $this->message, $this->entete);
                     $_SESSION['success'] = "Utilisateur créé.";
                 }
                 else
@@ -65,7 +82,7 @@ class Register
             else
                 $_SESSION['error_reg'] = "Les mots de passe ne correspondent pas !";
         }
-        else
-            $_SESSION['error_reg'] = "Une erreur est survenue.";
+        // else
+        //     $_SESSION['error_reg'] = "Une erreur est survenue.";
     }
 }

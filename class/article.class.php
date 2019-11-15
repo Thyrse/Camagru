@@ -111,11 +111,12 @@ class Article
 		return $alllikes['total'];
 	}
 
-	function getLiked($id)
+	function getLiked($id, $user)
 	{
 		global $bdd;
-		$liked = $bdd->prepare('SELECT `id_user` FROM `opinion` WHERE `id_publication` = :id');
+		$liked = $bdd->prepare('SELECT `id_user` FROM `opinion` WHERE `id_publication` = :id AND `id_user` = :id_user');
 		$liked->bindParam(':id', $id);
+		$liked->bindParam(':id_user', $user);
 		$liked->execute();
 		$alllikes = $liked->fetch();
 		return $alllikes;

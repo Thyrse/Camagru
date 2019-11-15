@@ -20,6 +20,10 @@ if(isset($_POST['create_account']))
     $inscription->setEmail($email);
     $inscription->setPassword($password);
     $inscription->setConfirmpass($confirm);
+    $inscription->setToken();
+    $inscription->setMessage();
+    $inscription->setSubject();
+    $inscription->setEntete();
     // $inscription->setToken();
     $inscription->register();
     header('location: registration.php');

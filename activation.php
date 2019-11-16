@@ -1,10 +1,20 @@
 <?php
 require_once('config/config.php');
 require_once('class/user.class.php');
-require_once('class/article.class.php');
+require_once('class/register.class.php');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 if(isset($_SESSION['user']))
 {
     header('location: index.php');
+}
+
+elseif(isset($_GET['token']))
+{
+    $token = $_GET['token'];
+
+    $activation = new Register;
+    $activation->activate($token);
 }
 ?>
 <!DOCTYPE html>
@@ -24,7 +34,7 @@ if(isset($_SESSION['user']))
        <?php include("inc/header.php"); ?>
     </header>
     <div id="main">
-        <div>Salut</div>
+        <div><?= $_SESSION['activ'] ?></div>
     </div>
     <footer>
         <div id="footer">

@@ -8,13 +8,16 @@ if(isset($_SESSION['user']))
 {
     header('location: index.php');
 }
-
 elseif(isset($_GET['token']))
 {
     $token = $_GET['token'];
 
     $activation = new Register;
     $activation->activate($token);
+}
+else
+{
+    header('location: index.php');
 }
 ?>
 <!DOCTYPE html>
@@ -33,8 +36,12 @@ elseif(isset($_GET['token']))
     <header>
        <?php include("inc/header.php"); ?>
     </header>
-    <div id="main">
-        <div><?= $_SESSION['activ'] ?></div>
+    <div id="main" class="activation">
+        <?php if(isset($_SESSION['activ_ok']) && $_SESSION['activ_ok'] !== false) : ?>
+        <div class="activated_acc"><p><?= $_SESSION['activ_ok']; $_SESSION['activ_ok'] = false; ?></p></div>
+        <?php elseif(isset($_SESSION['activ_err']) && $_SESSION['activ_err'] !== false) : ?>
+        <div class="activated_err"><p><?= $_SESSION['activ_err']; $_SESSION['activ_err'] = false;?></p></div>
+        <?php endif ?>
     </div>
     <footer>
         <div id="footer">

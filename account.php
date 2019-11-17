@@ -42,7 +42,8 @@ else
                 <div class="create_button">
                     <button type="submit" name="account_update">Modifier</button>
                 </div>
-                <a id="delete_confirm" href="#">Supprimer mon compte</a>
+                <a id="delete_confirm" href="?delete=1&id=<?php echo $_SESSION['user'];?>">Supprimer mon compte</a>
+                <!-- <a id="delete_confirm" href="#">Supprimer mon compte</a> -->
             </form>
         </div>
         <div class="create create_user">

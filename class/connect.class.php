@@ -21,12 +21,16 @@ class Connect
         if($this->username != NULL && $this->password != NULL)
         {
             $password = hash('whirlpool', 'terry la star'.$this->password);
-            $select = $bdd->prepare("SELECT id,username FROM users WHERE username = :username AND password = :password");
+            $select = $bdd->prepare("SELECT id,username,valid FROM users WHERE username = :username AND password = :password");
             $select->bindParam(':username', $this->username);
             $select->bindParam(':password', $password);
             $select->execute();
             $result = $select->fetch();
-            if($result['username'] != NULL)
+            if ($result['valid'] != 1)
+            {
+                $_SESSION['error'] = "Veuillez activer votre compte.";
+            }
+            elseif($result['username'] != NULL && $result['valid'] == 1)
             {
                 $_SESSION['user'] = $result['id'];
             }

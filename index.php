@@ -33,12 +33,13 @@ $results = $articles->getTimeLine();
                 <?php foreach($results as $row) { 
                     $comments = $articles->getCommentary($row['id']);
                     $likes = $articles->getLike($row['id']);
-                    $liked = $articles->getLiked($row['id'], $_SESSION['user']);?>                               
+                    if(isset($_SESSION['user'])) {
+                    $liked = $articles->getLiked($row['id'], $_SESSION['user']);}?>                               
                     <div class="item">
                     <div class="item_image">
                         <img src="assets/images/<?= $row['image'] ?>">
                         <span class="item_nblike"><?= $likes ?></span>
-                    <?php if(isset($_SESSION['user'])) : ?>
+                    <?php if(isset($liked)) : ?>
                         <?php if($liked['id_user']) : ?>
                             <form name="opinion" method="post" action="action.php" enctype="multipart/form-data">
                                 <input type="hidden" name="article_id" value="<?= $row['id'] ?>"/>

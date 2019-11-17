@@ -13,5 +13,12 @@
 		$_SESSION['user'] = false;
 		header('Location: index.php');
 	}
+	elseif (isset($_GET['delete']) AND isset($_GET['id']) AND $_GET['id'] == $_SESSION['user']) {
+		global $bdd;
 
+		$delecteacc = $bdd->prepare("DELETE FROM users WHERE id = ".$_SESSION['user']."");
+		$delecteacc->execute();
+		session_unset($_SESSION['user']);
+		header('Location: index.php');
+	}
 ?>

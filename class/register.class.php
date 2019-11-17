@@ -62,9 +62,8 @@ class Register
         {
             if($this->password == $this->confirmation_password)
             {
-                $select_users = $bdd->prepare("SELECT username,email FROM users WHERE username = :username OR email = :email");
+                $select_users = $bdd->prepare("SELECT username FROM users WHERE username = :username");
                 $select_users->bindParam(':username', $this->username);
-                $select_users->bindParam(':email', $this->email);
                 $select_users->execute();
                 $result = $select_users->fetch();
                 if($result['username'] == NULL)
@@ -114,11 +113,11 @@ class Register
 
         if($tokenid === '1')
         {
-            $_SESSION['activ'] = "Votre compte est activé, vous pouvez maintenant accéder aux sites";
+            $_SESSION['activ_ok'] = "Votre compte est activé, vous pouvez maintenant accéder aux sites";
         }
         else
         {
-            $_SESSION['activ'] = "Une erreur s'est produite, réessayez ultiérieurement.";
+            $_SESSION['activ_err'] = "Une erreur s'est produite, réessayez ultiérieurement.";
         }
     }
 }

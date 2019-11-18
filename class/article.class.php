@@ -71,7 +71,7 @@ class Article
 	function getTimeLine()
 	{
 		global $bdd;
-		$all = $bdd->prepare('SELECT `publication`.`image`,`publication`.`description`, `publication`.`id`, `users`.`username` FROM `publication` INNER JOIN `users` ON `publication`.`id_user` = `users`.`id` ORDER BY `publication`.`id` DESC');
+		$all = $bdd->prepare('SELECT `publication`.`image`,`publication`.`description`, `publication`.`id`, `publication`.`id_user`, `users`.`username` FROM `publication` INNER JOIN `users` ON `publication`.`id_user` = `users`.`id` ORDER BY `publication`.`id` DESC');
 		$all->execute();
 		$results = $all->fetchAll();
 		return $results;
@@ -94,7 +94,7 @@ class Article
 	function getCommentary($id)
 	{
 		global $bdd;
-		$comments = $bdd->prepare('SELECT commentary.content, users.username FROM commentary INNER JOIN users ON commentary.id_user = users.id WHERE id_publication = :id');
+		$comments = $bdd->prepare('SELECT `commentary`.`content`, `commentary`.`id_user`, `commentary`.`id`, `users`.`username` FROM commentary INNER JOIN users ON commentary.id_user = users.id WHERE id_publication = :id');
 		$comments->bindParam(':id', $id);
 		$comments->execute();
 		$allcomments = $comments->fetchAll();

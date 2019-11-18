@@ -9,8 +9,8 @@ class Register
     private $subject;
     private $entete;
     private $token;
-    
-    
+
+
     function setUsername($username)
     {
         if($username != "")
@@ -109,7 +109,6 @@ class Register
 	    $isvalid->execute();
 	    $activup = $isvalid->fetch();
         $tokenid = $activup[0];
-        var_dump($tokenid);
 
         if($tokenid === '1')
         {

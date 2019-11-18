@@ -166,15 +166,27 @@ a {
     font-size: 25px;
 }
 
+@media (max-width: 850px) {
+    .items-list .item {
+        width: 500px;
+        height: 330px;
+    }
+}
+
+@media (min-width: 850px) {
+    .items-list .item {
+        width: 650px;
+        height: 450px;
+    }
+}
+
 .items-list .item {
-    max-width: 750px;
     box-shadow: 0px 0px 15px -12px #000000;
     border-radius: 5px;
     margin: 3px;
     background-color: #ffffff;
     display: flex;
     position: relative;
-    height: 500px;
 }
 
 .items-list .item img {
@@ -220,6 +232,7 @@ a {
 
 .items-list .item_desc .item_author {
     border-bottom: 2px dotted #c9c9c9;
+    padding-right: 30px;
 }
 
 .items-list .item_desc .item_author p {
@@ -302,6 +315,26 @@ a {
     border-radius: 3px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+}
+
+.items-list .item .item_author .item_delete {
+    position: absolute;
+    right: 15px;
+    width: 20px;
+}
+
+.items-list .item .item_author .item_delete::after {
+    content: url("assets/images/error.svg");
+}
+
+.items-list .item .item_commentary .commentary_delete {
+    position: absolute;
+    right: 15px;
+    width: 15px;
+}
+
+.items-list .item .item_commentary .commentary_delete::after {
+    content: url("assets/images/error.svg");
 }
 
 

@@ -26,7 +26,7 @@ class Connect
             $select->bindParam(':password', $password);
             $select->execute();
             $result = $select->fetch();
-            if ($result['valid'] != 1)
+            if ($result['username'] != NULL && $result['valid'] != 1)
             {
                 $_SESSION['error'] = "Veuillez activer votre compte.";
             }

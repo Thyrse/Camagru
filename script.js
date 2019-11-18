@@ -46,4 +46,18 @@ window.addEventListener("load", function() {
         }
         clicked();
     }
+
+    function clicked() {
+        document.addEventListener("click", function(e) {
+            if (e.target.className == "commentary_delete" || e.target.className == "item_delete") {
+                if (confirm('Voulez-vous vraiment effectuer cette action ?')) {
+                    return true;
+                } else {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        })
+    }
+    clicked();
 });

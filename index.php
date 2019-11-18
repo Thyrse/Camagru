@@ -2,6 +2,8 @@
 require_once('config/config.php');
 require_once('class/user.class.php');
 require_once('class/article.class.php');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 if(isset($_SESSION['user']))
     $user = new Userinfo($_SESSION['user']);
 
@@ -55,12 +57,18 @@ $results = $articles->getTimeLine();
                     </div>
                     <div class="item_desc">
                         <div class="item_author">
+                            <?php if(isset($_SESSION['user']) && $_SESSION['user'] == $row['id_user']) : ?>
+                                <a class="item_delete" href="?delete_article=1&id=<?= $row['id'];?>"></a>
+                            <?php endif ?>
                             <span><em><b><?= $row['username'] ?></b></em></span>
                             <p><?=$row['description']?></p>
                         </div>
                         <div class="item_scroll">
                         <?php foreach($comments as $com) { ?>
                             <div class="item_commentary">
+                                <?php if(isset($_SESSION['user']) && $_SESSION['user'] == $com['id_user']) : ?>
+                                    <a class="commentary_delete" href="?delete_comment=1&id=<?= $com['id'];?>"></a>
+                                <?php endif ?>
                                 <span><?= $com['username'] ?></span>
                                 <p><?= $com['content'] ?></p>
                             </div>

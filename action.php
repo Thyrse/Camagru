@@ -112,7 +112,7 @@ elseif(isset($_POST['insert_comment']))
     $commentary->setPublication($article_id);
     $commentary->addCommentary();
     if($commentary->status == "ok")
-        header('location: create_article.php');
+        header('location: index.php');
     else
     {
         echo $commentary->status;

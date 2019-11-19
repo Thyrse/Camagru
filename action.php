@@ -44,62 +44,99 @@ elseif(isset($_POST['create_article']))
     $description = $_POST['description'];
     $user = $_SESSION['user'];
     $test_img = $_FILES['image_article'];
-    var_dump($_FILES['image_article']);
+
+
+
+
+    $data_img = $_POST['image_cam'];
+
+    // list($type, $data_img) = explode(';', $data_img);
+    // list(, $data_img) = explode(',', $data_img);
+    // $data_img = base64_decode($data_img);
+    // $newname = dirname(__FILE__).'/assets/images/'.$filename;
+    // file_put_contents($newname, $data_img);
+
+    var_dump($data_img);
+
+    if (preg_match('/^data:image\/(\w+);base64,/', $data_img, $type)) {
+        $data_img = substr($data_img, strpos($data_img, ',') + 1);
+        $type = strtolower($type[1]); // jpg, png, gif
+    
+        if (!in_array($type, [ 'jpg', 'jpeg', 'gif', 'png' ])) {
+            throw new \Exception('invalid image type');
+        }
+    
+        $data_img = base64_decode($data_img);
+    
+        if ($data_img === false) {
+            throw new \Exception('base64_decode failed');
+        }
+    } else {
+        throw new \Exception('did not match data URI with image data');
+    }
+    $filename = "img.{$type}";
+    $newname = dirname(__FILE__).'/assets/images/'.$filename;
+    file_put_contents($newname, $data_img);
+
+
+    var_dump($filename);
+
     $article = new Article;
-    $extension = array('jpg','jpeg','png', 'JPG', 'PNG', 'JPEG');
-    if((!empty($_FILES["image_article"])) && ($_FILES['image_article']['error'] == 0))
-    {
-        $filename = basename($_FILES['image_article']['name']);
-        $checkbackdoor = explode(".", $filename);
-        if(count($checkbackdoor) - 1 > 1)
-        {
-            echo "Problem dans le fichier";
-        }
-        else
-        {
-            $ext = substr($filename, strrpos($filename, '.') + 1);
-            if (in_array($ext, $extension) && ($_FILES["image_article"]["type"] == "image/jpeg") && ($_FILES["image_article"]["size"] < 350000))
-            {
-                $newname = dirname(__FILE__).'/assets/images/'.$filename;
-                if (!file_exists($newname))
-                {
-                    if ((move_uploaded_file($_FILES['image_article']['tmp_name'],$newname)))
-                    {
-                        $article->setImage($filename);
-                        echo "Photo de profil bien modifié";
-                    }
-                    else
-                    {
-                        echo "Impossible d'upload le fichier .";
-                    }
-                }
-                else
-                {
-      // existe deja
-                    $article->setImage($filename);
-                    echo "Photo de profil bien modifié";
-                }
-            }
-            else
-            {
-                echo "Fichier pas au bon format";
-            }
-        }
-    }
-    else
-    {
-        echo "Error: No file uploaded";
-    }
+    $article->setImage($filename);
+    // $extension = array('jpg','jpeg','png', 'JPG', 'PNG', 'JPEG');
+    // if((!empty($_FILES["image_article"])) && ($_FILES['image_article']['error'] == 0))
+    // {
+    //     $filename = basename($_FILES['image_article']['name']);
+    //     $checkbackdoor = explode(".", $filename);
+    //     if(count($checkbackdoor) - 1 > 1)
+    //     {
+    //         echo "Problem dans le fichier";
+    //     }
+    //     else
+    //     {
+    //         $ext = substr($filename, strrpos($filename, '.') + 1);
+    //         if (in_array($ext, $extension) && ($_FILES["image_article"]["type"] == "image/jpeg") && ($_FILES["image_article"]["size"] < 350000))
+    //         {
+    //             $newname = dirname(__FILE__).'/assets/images/'.$filename;
+    //             if (!file_exists($newname))
+    //             {
+    //                 if ((move_uploaded_file($_FILES['image_article']['tmp_name'],$newname)))
+    //                 {
+    //                     $article->setImage($filename);
+    //                     echo "Photo bien modifiée.";
+    //                 }
+    //                 else
+    //                 {
+    //                     echo "Impossible d'upload le fichier.";
+    //                 }
+    //             }
+    //             else
+    //             {
+    //   // existe deja
+    //                 $article->setImage($filename);
+    //                 echo "Photo de profil bien modifié.";
+    //             }
+    //         }
+    //         else
+    //         {
+    //             echo "Fichier pas au bon format.";
+    //         }
+    //     }
+    // }
+    // else
+    // {
+    //     echo "Error: No file uploaded.";
+    // }
     $article->setDescription($description);
     $article->setUser($user);
     $article->article();
-    if($article->status == "ok")
-        header('location: index.php');
-    else
-    {
-        echo $article->status;
-        echo "NON";
-    }
+    // if($article->status == "ok")
+    //     header('location: create_article.php');
+    // else
+    // {
+    //     echo $article->status;
+    //     echo "NON";
+    // }
 }
 elseif(isset($_POST['insert_comment']))
 {

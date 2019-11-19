@@ -16,7 +16,7 @@ else
 <head>
     <title>Creer un produit</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
-    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="yolo.js"></script>
 </head>
 
 <body>
@@ -32,11 +32,16 @@ else
                     <textarea name="description" rows="8" cols="21" placeholder="Description..." required></textarea>
                     <label for="image">Image :</label>
                     <input type="file" name="image_article" required>
+                    <input id="img_web" type="text" name="image_cam" value="" hidden>
                 </div>
                 <div class="create_button">
                     <button type="submit" name="create_article" value="">Publier la photo</button>
                 </div>
             </form>
+            <video id="video"></video>
+            <button id="startbutton">Prendre une photo</button>
+            <canvas id="canvas"></canvas>
+            <img src="" id="photo" alt="photo">
         </div>
     </div>
     <footer>

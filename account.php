@@ -66,6 +66,20 @@ else
                 </div>
             </form>
         </div>
+        <div class="create create_user">
+            <h3>Preferences newsletters</h3>
+            <form name="submit" method="post" action="action.php">
+                <div class="user_registration">
+                    <div><input type="radio" id="check_yes" name="newsletter" value="1" checked>
+                    <label for="check_yes">Oui</label></div>
+                    <div><input type="radio" id="check_no" name="newsletter" value="0">
+                    <label for="check_no">Non</label></div>
+                </div>
+                <div class="create_button">
+                    <button type="submit" name="newsletter_update">Modifier</button>
+                </div>
+            </form>
+        </div>
     </div>
     <footer>
         <div id="footer">

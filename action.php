@@ -44,10 +44,6 @@ elseif(isset($_POST['create_article']))
     $description = $_POST['description'];
     $user = $_SESSION['user'];
     $test_img = $_FILES['image_article'];
-
-
-
-
     $data_img = $_POST['image_cam'];
 
     // list($type, $data_img) = explode(';', $data_img);
@@ -74,12 +70,12 @@ elseif(isset($_POST['create_article']))
     } else {
         throw new \Exception('did not match data URI with image data');
     }
-    $filename = "img.{$type}";
-    $newname = dirname(__FILE__).'/assets/images/'.$filename;
-    file_put_contents($newname, $data_img);
-
+    $filename = md5(uniqid(rand('9999999','999999999999999'), true)).".{$type}";
+    $newfile = dirname(__FILE__).'/assets/images/'.$filename;
+    file_put_contents($newfile, $data_img);
 
     var_dump($filename);
+
 
     $article = new Article;
     $article->setImage($filename);

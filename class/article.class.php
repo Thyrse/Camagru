@@ -3,6 +3,9 @@ class Article
 {
 	private $image;
 	private $description;
+	private $message;
+    private $subject;
+    private $entete;
 	public $status;
 
 	function setImage($image)
@@ -27,6 +30,19 @@ class Article
 	{
 		$this->publication = $publication;
 	}
+	function setMessage()
+    {
+        $message = "Bonjour, vous avez un nouveau commentaire !";
+        $this->message = $message;
+    }
+    function setSubject()
+    {
+        $this->subject = "Nouveau commentaire";
+    }
+    function setEntete()
+    {
+        $this->entete = "Content-type: text/html; charset=utf-8";
+    }
 
 	function getImage($image)
 	{
@@ -71,9 +87,9 @@ class Article
 	function getTimeLine()
 	{
 		global $bdd;
-		$all = $bdd->prepare('SELECT `publication`.`image`,`publication`.`description`, `publication`.`id`, `publication`.`id_user`, `users`.`username` FROM `publication` INNER JOIN `users` ON `publication`.`id_user` = `users`.`id` ORDER BY `publication`.`id` DESC');
-		$all->execute();
-		$results = $all->fetchAll();
+		$timeline = $bdd->prepare('SELECT `publication`.`image`,`publication`.`description`, `publication`.`id`, `publication`.`id_user`, `users`.`username` FROM `publication` INNER JOIN `users` ON `publication`.`id_user` = `users`.`id` ORDER BY `publication`.`id` DESC LIMIT 5');
+		$timeline->execute();
+		$results = $timeline->fetchAll();
 		return $results;
 	}
 
@@ -87,7 +103,15 @@ class Article
 			$article->bindParam(':id_user', $this->user);
 			$article->bindParam(':id_publication', $this->publication);
 			$article->execute();
-			$this->status = "ok";
+			$this->status = "ok";		
+			$newsletter = $bdd->prepare("SELECT `users`.`email`, `users`.`newsletter`, `publication`.`id_user` FROM `users` INNER JOIN `publication` ON `publication`.`id_user` = `users`.`id` WHERE `publication`.`id` = :id_publication");
+			$newsletter->bindParam(':id_publication', $this->publication);
+			$newsletter->execute();
+			$notif = $newsletter->fetch();
+			if ($notif['newsletter'] == 1 && $notif['id_user'] !== $this->user)
+			{
+				mail($notif['email'], $this->subject, $this->message, $this->entete);
+			}
 		}
 	}
 

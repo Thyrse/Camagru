@@ -8,6 +8,7 @@ class Userinfo
     private $user;
     private $pwdconfirm;
     private $pwdreplace;
+    private $newsletter;
     public $status;
     
     public function __construct($username = null)
@@ -23,6 +24,7 @@ class Userinfo
             $this->username = $result['username'];
             $this->password = $result['password'];
             $this->email = $result['email'];
+            $this->newsletter = $result['newsletter'];
         }
     }
 
@@ -51,6 +53,10 @@ class Userinfo
         if($pwdconfirm != "")
             $this->pwdconfirm = $pwdconfirm;
     }
+    function setNewsletter($newsletter)
+	{
+		$this->newsletter = $newsletter;
+	}
 
     function getUsername()
     {
@@ -75,6 +81,10 @@ class Userinfo
     function getConfirmpass()
     {
         return $this->pwdconfirm;
+    }
+    function getNewsletter()
+    {
+        return $this->newsletter;
     }
 
     function update()
@@ -151,6 +161,28 @@ class Userinfo
         else
         {
             $_SESSION['passwd'] = "Champ(s) incomplet(s).";
+        }
+    }
+
+    function updatenews()
+    {
+        global $bdd;
+        if($this->newsletter != NULL)
+        {
+            $update = $bdd->prepare("UPDATE users SET newsletter = :newsletter WHERE id = :id_user");
+            $update->bindParam(':newsletter', $this->newsletter);
+            $update->bindParam(':id_user', $this->user);
+            $update->execute();
+            $count = $update->rowCount();
+            if ($count > 0)
+            {
+                $this->status = "ok";
+                $_SESSION['newsupdate'] = "Informations mises à jour.";
+            }
+        }
+        else
+        {
+            $_SESSION['account'] = "Champ(s) incomplet(s).";
         }
     }
 

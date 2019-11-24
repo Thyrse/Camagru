@@ -143,14 +143,17 @@ elseif(isset($_POST['insert_comment']))
     $commentary->setUser($user);
     $commentary->setContent($content);
     $commentary->setPublication($article_id);
+    $commentary->setMessage();
+    $commentary->setSubject();
+    $commentary->setEntete();
     $commentary->addCommentary();
-    if($commentary->status == "ok")
-        header('location: index.php');
-    else
-    {
-        echo $commentary->status;
-        echo "Bah non";
-    }
+    // if($commentary->status == "ok")
+    //     header('location: index.php');
+    // else
+    // {
+    //     echo $commentary->status;
+    //     echo "Bah non";
+    // }
 }
 elseif(isset($_POST['account_update']))
 {
@@ -191,5 +194,15 @@ elseif(isset($_POST['opinion']))
     $commentary->setPublication($article_id);
     $commentary->addLike();
     header('location: index.php');
+}
+elseif(isset($_POST['newsletter_update']))
+{
+    $newsletter = $_POST['newsletter'];
+    $user = $_SESSION['user'];
+    $commentary = new Userinfo;
+    $commentary->setUser($user);
+    $commentary->setNewsletter($newsletter);
+    $commentary->updatenews();
+    header('location: account.php');
 }
 ?>

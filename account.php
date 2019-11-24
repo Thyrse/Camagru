@@ -70,10 +70,20 @@ else
             <h3>Preferences newsletters</h3>
             <form name="submit" method="post" action="action.php">
                 <div class="user_registration">
+                    <?php if($user->getNewsletter() == 1) : ?>
                     <div><input type="radio" id="check_yes" name="newsletter" value="1" checked>
                     <label for="check_yes">Oui</label></div>
                     <div><input type="radio" id="check_no" name="newsletter" value="0">
                     <label for="check_no">Non</label></div>
+                    <?php elseif($user->getNewsletter() == 0) : ?>
+                    <div><input type="radio" id="check_yes" name="newsletter" value="1">
+                    <label for="check_yes">Oui</label></div>
+                    <div><input type="radio" id="check_no" name="newsletter" value="0" checked>
+                    <label for="check_no">Non</label></div>
+                    <?php endif ?>
+                    <?php if(isset($_SESSION['newsupdate']) && $_SESSION['newsupdate'] !== false) : ?>
+                    <span class="msg_success"><?= $_SESSION['newsupdate']; unset($_SESSION['newsupdate']); ?></span>
+                    <?php endif ?>
                 </div>
                 <div class="create_button">
                     <button type="submit" name="newsletter_update">Modifier</button>

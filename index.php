@@ -86,6 +86,8 @@ $results = $articles->getTimeLine();
            <?php  } ?>
             </div>
         </div>
+        <a href="?page=2">Page précédente</a>
+        <a href="?page=3">Page suivante</a>
     </div>
     <footer>
         <div id="footer">

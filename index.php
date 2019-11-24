@@ -4,11 +4,29 @@ require_once('class/user.class.php');
 require_once('class/article.class.php');
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-if(isset($_SESSION['user']))
+if(isset($_SESSION['user'])) {
     $user = new Userinfo($_SESSION['user']);
-
+}
+if (!isset($_GET['page'])) {
+    $page = 1;
+}
+elseif($_GET['page'] == 0)
+{
+    $page = 1;
+    header('location: index.php');
+}
+else {
+    $page = (int)$_GET['page'];
+}
 $articles = new Article();
-$results = $articles->getTimeLine();
+$results = $articles->getTimeLine($page);
+$total_pages = $articles->getPages();
+
+if (isset($_GET['page']) && (int)$_GET['page'] > $total_pages)
+{
+    header('location: index.php');
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -86,8 +104,14 @@ $results = $articles->getTimeLine();
            <?php  } ?>
             </div>
         </div>
-        <a href="?page=2">Page précédente</a>
-        <a href="?page=3">Page suivante</a>
+        <?php if(isset($_GET['page']) && $_GET['page'] >= 2) : ?>
+        <a href="?page=<?= $_GET['page'] - 1?>">Page précédente</a>
+        <?php endif ?>
+        <?php if(isset($_GET['page']) && (int)$_GET['page'] < $total_pages) : ?>
+        <a href="?page=<?= $_GET['page'] + 1 ?>">Page suivante</a>
+        <?php elseif(!isset($_GET['page']) && $total_pages > 1) : ?>
+        <a href="?page=2">Page suivante</a>
+        <?php endif ?>
     </div>
     <footer>
         <div id="footer">

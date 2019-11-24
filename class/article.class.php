@@ -5,7 +5,8 @@ class Article
 	private $description;
 	private $message;
     private $subject;
-    private $entete;
+	private $entete;
+	private $pages;
 	public $status;
 
 	function setImage($image)
@@ -42,7 +43,11 @@ class Article
     function setEntete()
     {
         $this->entete = "Content-type: text/html; charset=utf-8";
-    }
+	}
+	function setPages($pages)
+	{
+		$this->pages = $pages;
+	}
 
 	function getImage($image)
 	{
@@ -64,6 +69,10 @@ class Article
 	{
 		return $this->publication;
 	}
+	function getPages()
+	{
+		return $this->pages;
+	}
 	// function setToken()
 	// {
 	//     $token = rand('9999999','999999999999999');
@@ -84,10 +93,17 @@ class Article
 		}
 	}
 
-	function getTimeLine()
+	function getTimeLine($page)
 	{
 		global $bdd;
-		$timeline = $bdd->prepare('SELECT `publication`.`image`,`publication`.`description`, `publication`.`id`, `publication`.`id_user`, `users`.`username` FROM `publication` INNER JOIN `users` ON `publication`.`id_user` = `users`.`id` ORDER BY `publication`.`id` DESC LIMIT 5');
+		$limit = 5;
+		$end = $bdd->prepare("SELECT * FROM `publication`");
+		$end->execute();
+		$total_results = $end->rowCount();
+		$total_pages = ceil($total_results / $limit);
+		$start = ($page - 1) * $limit;
+		$this->setPages($total_pages);
+		$timeline = $bdd->prepare("SELECT `publication`.`image`,`publication`.`description`, `publication`.`id`, `publication`.`id_user`, `users`.`username` FROM `publication` INNER JOIN `users` ON `publication`.`id_user` = `users`.`id` ORDER BY `publication`.`id` DESC LIMIT $start, $limit");
 		$timeline->execute();
 		$results = $timeline->fetchAll();
 		return $results;

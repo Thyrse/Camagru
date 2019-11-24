@@ -147,13 +147,13 @@ elseif(isset($_POST['insert_comment']))
     $commentary->setSubject();
     $commentary->setEntete();
     $commentary->addCommentary();
-    // if($commentary->status == "ok")
-    //     header('location: index.php');
-    // else
-    // {
-    //     echo $commentary->status;
-    //     echo "Bah non";
-    // }
+    if($commentary->status == "ok")
+        header('location: index.php');
+    else
+    {
+        echo $commentary->status;
+        echo "Bah non";
+    }
 }
 elseif(isset($_POST['account_update']))
 {

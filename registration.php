@@ -1,9 +1,17 @@
 <?php
 require_once('config/config.php');
 require_once('class/user.class.php');
+require_once('class/register.class.php');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 if(isset($_SESSION['user']))
     header('location: index.php');
-
+elseif(isset($_GET['token']) && isset($_GET['id']))
+{
+    $token = $_GET['token'];
+    $id = (int)$_GET['id'];
+    $resetpwd = new Register;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,6 +28,33 @@ if(isset($_SESSION['user']))
     </header>
     <div id="main">
         <div class="create create_user">
+        <?php if(isset($_GET['action']) && isset($_GET['id']) && isset($_GET['token']) && $_GET['action'] == "reset_password") : ?>
+        <h3>Changer le mot de passe</h3>
+            <form name="reset_pwd" method="post" action="action.php">
+                    <div class="user_registration">
+                        <label for="password">Nouveau mot de passe :</label>
+                        <input type="password" name="password" maxlength="20" placeholder="Unique pour ce site..." required>
+                        <label>Confirmer le mot de passe :</label>
+                        <input type="password" name="password_confirm" maxlength="20" placeholder="Retapez le mot de passe..." required>
+                        <input type="hidden" name="token" value="<?= $_GET['token'] ?>"/>
+                        <input type="hidden" name="id_user" value="<?= $_GET['id'] ?>"/>
+                    </div>
+                    <div class="create_button">
+                        <button type="submit" name="reset_pwd" value="">Modifier</button>
+                    </div>
+            </form>
+        <?php elseif(isset($_GET['action']) && $_GET['action'] == "reset_password") : ?>
+        <h3>Réinitialiser le mot de passe</h3>
+            <form name="reset_username" method="post" action="action.php">
+                    <div class="user_registration">
+                    <label for="username">Tapez le pseudo de votre compte :</label>
+                    <input type="text" name="username" maxlength="10" placeholder="Ex: Tintin, Harambe..." required>
+                    </div>
+                    <div class="create_button">
+                        <button type="submit" name="reset_username" value="">Envoyer</button>
+                    </div>
+            </form>
+        <?php else : ?>
             <h3>Inscription</h3>
             <form name="submit" method="post" action="action.php">
                 <div class="user_registration">
@@ -42,6 +77,7 @@ if(isset($_SESSION['user']))
                     <button type="submit" name="create_account" value="">S'inscrire</button>
                 </div>
             </form>
+            <?php endif ?>
         </div>
     </div>
     <footer>

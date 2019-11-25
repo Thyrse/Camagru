@@ -29,6 +29,7 @@ include('core/restrict.php');
             <label>Mot de passe :</label>
             <input type="password" name="password" maxlength="20" placeholder="Mot de passe" required>
         </div>
+        <a href="registration.php?action=reset_password" class="forgot_passwd">Mot de passe oublié ?</a>
         <div class="toggle_button">
             <button type="submit" name="login" value="login">Connexion</button>
         </div>

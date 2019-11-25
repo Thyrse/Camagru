@@ -14,6 +14,8 @@ if(isset($_POST['create_account']))
     $password = $_POST['password'];
     $confirm = $_POST['password_confirm'];
     $email = $_POST['email'];
+    $message = "Bonjour, voici un nouveau mail ! http://localhost:8100/activation.php?token=";
+    $subject = "Activation de votre compte";
 
     $inscription = new Register;
     $inscription->setUsername($username);
@@ -21,10 +23,9 @@ if(isset($_POST['create_account']))
     $inscription->setPassword($password);
     $inscription->setConfirmpass($confirm);
     $inscription->setToken();
-    $inscription->setMessage();
-    $inscription->setSubject();
+    $inscription->setMessage($message);
+    $inscription->setSubject($subject);
     $inscription->setEntete();
-    // $inscription->setToken();
     $inscription->register();
     header('location: registration.php');
 }
@@ -204,5 +205,32 @@ elseif(isset($_POST['newsletter_update']))
     $commentary->setNewsletter($newsletter);
     $commentary->updatenews();
     header('location: account.php');
+}
+elseif(isset($_POST['reset_pwd']))
+{
+    $password = $_POST['password'];
+    $new_pwd = $_POST['password_confirm'];
+    $token = $_POST['token'];
+    $id = $_POST['id_user'];
+    $updatepwd = new Register;
+    $updatepwd->setPassword($password);
+    $updatepwd->setConfirmpass($new_pwd);
+    $updatepwd->resetpwd($token, $id);
+    header('location: registration.php');
+}
+elseif(isset($_POST['reset_username']))
+{
+    $username = $_POST['username'];
+    $message = "Bonjour, vous pouvez réinitialiser votre mot de passer à l'aide du lien suivant : http://localhost:8100/registration.php?action=reset_password&token=";
+    $subject = "Réinitialisation de mot de passe";
+
+    $catchmail = new Register;
+    $catchmail->setUsername($username);
+    $catchmail->setToken();
+    $catchmail->setMessage($message);
+    $catchmail->setSubject($subject);
+    $catchmail->setEntete();
+    $catchmail->sendmail();
+    header('location: registration.php');
 }
 ?>

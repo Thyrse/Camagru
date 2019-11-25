@@ -696,6 +696,12 @@ footer {
     border-radius: 5px;
 }
 
+.forgot_passwd {
+    text-align: center;
+    font-size: 13px;
+    margin: 7px 0;
+}
+
 .toggle .toggle_button {
     text-align: center;
 }

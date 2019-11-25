@@ -37,14 +37,14 @@ class Register
         $token = md5(uniqid(rand('9999999','999999999999999'), true));
         $this->token = $token;
     }
-    function setMessage()
+    function setMessage($message)
     {
-        $message = "Bonjour, voici un nouveau mail ! http://localhost:8100/activation.php?token=".$this->token;
-        $this->message = $message;
+        // $message = "Bonjour, voici un nouveau mail ! http://localhost:8100/activation.php?token=".$this->token;
+        $this->message = $message.$this->token;
     }
-    function setSubject()
+    function setSubject($subject)
     {
-        $this->subject = "Activation de votre compte";
+        $this->subject = $subject;
     }
     function setEntete()
     {
@@ -118,5 +118,60 @@ class Register
         {
             $_SESSION['activ_err'] = "Une erreur s'est produite, réessayez ultiérieurement.";
         }
+    }
+
+
+    function resetpwd($token, $id)
+    {
+        global $bdd;
+        if($this->password != NULL && $this->confirmation_password != NULL)
+        {
+            if($this->password == $this->confirmation_password)
+            {
+                $pwdreplace = hash('whirlpool', 'terry la star'. $this->password);
+                $resetpwd = $bdd->prepare("UPDATE `users` SET `password` = :newpwd WHERE `users`.`id` = :id_user AND `users`.`reset` = :token");
+                $resetpwd->bindParam(':newpwd', $pwdreplace);
+                $resetpwd->bindParam(':token', $token, PDO::PARAM_STR);
+                $resetpwd->bindParam(':id_user', $id, PDO::PARAM_STR);
+                try {
+                    $resetpwd->execute();
+                    $deltoken = $bdd->prepare("UPDATE `users` SET `users`.`reset` = '' WHERE `users`.`id` = :id_user AND `users`.`reset` = :token");
+                    $deltoken->bindParam(':id_user', $id, PDO::PARAM_STR);
+                    $deltoken->bindParam(':token', $token, PDO::PARAM_STR);
+                    $deltoken->execute();
+                    $_SESSION['successp'] = "Mot de passe mis à jour.";
+                    $resetpwd->rowCount() ? $this->status = "ok" : $_SESSION['passwd'] = "Une erreur est survenue.";
+                }
+                catch (PDOException $e) {
+                    $_SESSION['passwd'] = "Une erreur est survenue.";
+                }
+            }
+        }
+    }
+
+    function sendmail()
+	{
+        global $bdd;
+
+	    $catchmail = $bdd->prepare("SELECT `username`, `email`, `id` FROM `users` WHERE `username` = :username");
+        $catchmail->bindParam(':username', $this->username);
+        try {
+            $catchmail->execute();
+            $catchedmail = $catchmail->fetch();
+            if($catchedmail['username'] != NULL && $catchedmail['email'] != NULL)
+            {
+                $addreset = $bdd->prepare("UPDATE `users` SET `reset` = :token WHERE `users`.`username` = :username AND `users`.`email` = :email");
+                $addreset->bindParam(':token', $this->token);
+                $addreset->bindParam(':username', $catchedmail['username']);
+                $addreset->bindParam(':email', $catchedmail['email']);
+                $addreset->execute();
+                mail($catchedmail['email'], $this->subject, $this->message."&id=".$catchedmail['id'], $this->entete);
+            }
+            $_SESSION['successp'] = "Mot de passe mis à jour.";
+        }
+        catch (PDOException $e) {
+            $_SESSION['passwd'] = "Une erreur est survenue.";
+        }
+
     }
 }

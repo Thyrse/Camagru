@@ -12,6 +12,9 @@ elseif(isset($_GET['token']) && isset($_GET['id']))
     $id = (int)$_GET['id'];
     $resetpwd = new Register;
 }
+$user = new Userinfo;
+$user->setToken();
+$token = $_SESSION['token'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,6 +41,7 @@ elseif(isset($_GET['token']) && isset($_GET['id']))
                         <input type="password" name="password_confirm" maxlength="20" placeholder="Retapez le mot de passe..." required>
                         <input type="hidden" name="token" value="<?= $_GET['token'] ?>"/>
                         <input type="hidden" name="id_user" value="<?= $_GET['id'] ?>"/>
+                        <input type="hidden" name="form_token" value="<?= $token ?>"/>
                     </div>
                     <div class="create_button">
                         <button type="submit" name="reset_pwd" value="">Modifier</button>
@@ -47,8 +51,9 @@ elseif(isset($_GET['token']) && isset($_GET['id']))
         <h3>Réinitialiser le mot de passe</h3>
             <form name="reset_username" method="post" action="action.php">
                     <div class="user_registration">
-                    <label for="username">Tapez le pseudo de votre compte :</label>
-                    <input type="text" name="username" maxlength="10" placeholder="Ex: Tintin, Harambe..." required>
+                        <label for="username">Tapez le pseudo de votre compte :</label>
+                        <input type="text" name="username" maxlength="10" placeholder="Ex: Tintin, Harambe..." required>
+                        <input type="hidden" name="form_token" value="<?= $token ?>"/>
                     </div>
                     <div class="create_button">
                         <button type="submit" name="reset_username" value="">Envoyer</button>
@@ -71,7 +76,7 @@ elseif(isset($_GET['token']) && isset($_GET['id']))
                     <?php elseif (isset($_SESSION['success']) && $_SESSION['success'] !== false): ?>
                         <span class="msg_success"><?= $_SESSION['success'] ?></span><?php $_SESSION['success'] = false; ?>
                     <?php endif ?>
-                    
+                    <input type="hidden" name="form_token" value="<?= $token ?>"/>
                 </div>
                 <div class="create_button">
                     <button type="submit" name="create_account" value="">S'inscrire</button>

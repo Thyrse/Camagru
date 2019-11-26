@@ -4,6 +4,8 @@ require_once('class/user.class.php');
 if(isset($_SESSION['user']))
 {
     $user = new Userinfo($_SESSION['user']);
+    $user->setToken();
+    $token = $_SESSION['token'];
 }
 else
 {
@@ -33,6 +35,7 @@ else
                     <label for="image">Image :</label>
                     <input type="file" name="image_article" required>
                     <input id="img_web" type="text" name="image_cam" value="" hidden>
+                    <input type="hidden" name="form_token" value="<?= $token ?>"/>
                 </div>
                 <div class="create_button">
                     <button type="submit" name="create_article" value="">Publier la photo</button>

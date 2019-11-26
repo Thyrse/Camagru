@@ -9,6 +9,7 @@ class Userinfo
     private $pwdconfirm;
     private $pwdreplace;
     private $newsletter;
+    private $token;
     public $status;
     
     public function __construct($username = null)
@@ -56,6 +57,11 @@ class Userinfo
     function setNewsletter($newsletter)
 	{
 		$this->newsletter = $newsletter;
+    }
+    function setToken()
+	{
+        $token = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
+        $_SESSION['token'] = $token;
 	}
 
     function getUsername()

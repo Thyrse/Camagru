@@ -6,6 +6,8 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 if(isset($_SESSION['user'])) {
     $user = new Userinfo($_SESSION['user']);
+    $user->setToken();
+    $token = $_SESSION['token'];
 }
 if (!isset($_GET['page'])) {
     $page = 1;
@@ -21,7 +23,6 @@ else {
 $articles = new Article();
 $results = $articles->getTimeLine($page);
 $total_pages = $articles->getPages();
-
 if (isset($_GET['page']) && (int)$_GET['page'] > $total_pages)
 {
     header('location: index.php');
@@ -93,11 +94,14 @@ if (isset($_GET['page']) && (int)$_GET['page'] > $total_pages)
                         <?php  } ?>
                         </div>
                         <div class="item_area">
+                        <?php if(isset($_SESSION['user'])) : ?>
                             <form name="submit" method="post" action="action.php">
                                 <textarea name="commentary_content" rows="8" cols="21" placeholder="Votre commentaire..." required></textarea>
                                 <input type="hidden" name="article_id" value="<?= $row['id'] ?>"/>
+                                <input type="hidden" name="comment_token" value="<?= $token ?>"/>
                                 <button type="submit" name="insert_comment">Publier</button>
                             </form>
+                        <?php endif ?>
                         </div>
                     </div>
                 </div>

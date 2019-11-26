@@ -7,6 +7,8 @@ class Article
     private $subject;
 	private $entete;
 	private $pages;
+	private $secure;
+
 	public $status;
 
 	function setImage($image)
@@ -47,6 +49,11 @@ class Article
 	function setPages($pages)
 	{
 		$this->pages = $pages;
+	}
+	function setSecure()
+	{
+        $token = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
+        $_SESSION['token'] = $token;
 	}
 
 	function getImage($image)

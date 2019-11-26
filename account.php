@@ -4,6 +4,8 @@ require_once('class/user.class.php');
 if(isset($_SESSION['user']))
 {
     $user = new Userinfo($_SESSION['user']);
+    $user->setToken();
+    $token = $_SESSION['token'];
 }
 else
 {
@@ -38,6 +40,7 @@ else
                     echo '<span class="msg_error">'.$_SESSION['account'].'</span>'; $_SESSION['account'] = false; }
                     elseif(isset($_SESSION['successa']) && $_SESSION['successa'] !== false) { 
                         echo '<span class="msg_success">'.$_SESSION['successa'].'</span>'; $_SESSION['successa'] = false; } ?>
+                    <input type="hidden" name="form_token" value="<?= $token ?>"/>
                 </div>
                 <div class="create_button">
                     <button type="submit" name="account_update">Modifier</button>
@@ -60,6 +63,7 @@ else
                     echo '<span class="msg_error">'.$_SESSION['passwd'].'</span>'; $_SESSION['passwd'] = false; }
                     elseif(isset($_SESSION['successp']) && $_SESSION['successp'] !== false) { 
                         echo '<span class="msg_success">'.$_SESSION['successp'].'</span>'; $_SESSION['successp'] = false; }?>
+                    <input type="hidden" name="form_token" value="<?= $token ?>"/>
                 </div>
                 <div class="create_button">
                     <button type="submit" name="password_update">Modifier</button>
@@ -84,6 +88,7 @@ else
                     <?php if(isset($_SESSION['newsupdate']) && $_SESSION['newsupdate'] !== false) : ?>
                     <span class="msg_success"><?= $_SESSION['newsupdate']; unset($_SESSION['newsupdate']); ?></span>
                     <?php endif ?>
+                    <input type="hidden" name="form_token" value="<?= $token ?>"/>
                 </div>
                 <div class="create_button">
                     <button type="submit" name="newsletter_update">Modifier</button>

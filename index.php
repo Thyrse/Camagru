@@ -44,7 +44,7 @@ if (isset($_GET['page']) && (int)$_GET['page'] > $total_pages)
     <header>
        <?php include("inc/header.php"); ?>
     </header>
-    <div id="main">
+    <div id="main" class="index_nav">
         <div class="items-block">
             <div class="items-list">
                 <div class="item_empty">
@@ -103,15 +103,17 @@ if (isset($_GET['page']) && (int)$_GET['page'] > $total_pages)
                 </div>
            <?php  } ?>
             </div>
+            <div class="nav_options">
+                <?php if(isset($_GET['page']) && $_GET['page'] >= 2) : ?>
+                <a class="change_page" href="?page=<?= $_GET['page'] - 1?>"><img src="assets/images/arrow_left.svg" />Page précédente</a>
+                <?php endif ?>
+                <?php if(isset($_GET['page']) && (int)$_GET['page'] < $total_pages) : ?>
+                <a class="change_page" href="?page=<?= $_GET['page'] + 1 ?>">Page suivante<img src="assets/images/arrow_right.svg" /></a>
+                <?php elseif(!isset($_GET['page']) && $total_pages > 1) : ?>
+                <a class="change_page" href="?page=2">Page suivante<img src="assets/images/arrow_right.svg" /></a>
+                <?php endif ?>
+            </div>
         </div>
-        <?php if(isset($_GET['page']) && $_GET['page'] >= 2) : ?>
-        <a href="?page=<?= $_GET['page'] - 1?>">Page précédente</a>
-        <?php endif ?>
-        <?php if(isset($_GET['page']) && (int)$_GET['page'] < $total_pages) : ?>
-        <a href="?page=<?= $_GET['page'] + 1 ?>">Page suivante</a>
-        <?php elseif(!isset($_GET['page']) && $total_pages > 1) : ?>
-        <a href="?page=2">Page suivante</a>
-        <?php endif ?>
     </div>
     <footer>
         <div id="footer">

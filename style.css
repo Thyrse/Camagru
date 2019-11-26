@@ -114,10 +114,14 @@ a {
 
 #main {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     padding-bottom: 20px;
     padding-top: 20px;
     justify-content: center;
+}
+
+.index_nav {
+    flex-direction: column;
 }
 
 .category-block {
@@ -335,6 +339,29 @@ a {
 
 .items-list .item .item_commentary .commentary_delete::after {
     content: url("assets/images/error.svg");
+}
+
+.nav_options {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav_options div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.change_page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.change_page img {
+    width: 30px;
+    margin: 0 10px;
 }
 
 

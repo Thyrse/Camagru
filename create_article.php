@@ -33,7 +33,7 @@ else
                     <label for="description">Légende : </label>
                     <textarea name="description" rows="8" cols="21" placeholder="Description..." required></textarea>
                     <label for="image">Image :</label>
-                    <input type="file" name="image_article" required>
+                    <!-- <input type="file" name="image_article" required> -->
                     <input id="img_web" type="text" name="image_cam" value="" hidden>
                     <input type="hidden" name="form_token" value="<?= $token ?>"/>
                 </div>
@@ -41,10 +41,14 @@ else
                     <button type="submit" name="create_article" value="">Publier la photo</button>
                 </div>
             </form>
-            <video id="video"></video>
-            <button id="startbutton">Prendre une photo</button>
-            <canvas id="canvas"></canvas>
-            <img src="" id="photo" alt="photo">
+            <div class="take_picture">
+                <video id="video"></video>
+                <div>
+                    <button id="startbutton">Prendre une photo</button>
+                </div>
+                <canvas id="canvas"></canvas>
+                <img src="" id="photo" alt="photo">
+            </div>
         </div>
     </div>
     <footer>

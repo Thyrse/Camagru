@@ -53,7 +53,7 @@ elseif(isset($_POST['create_article']))
     {
         $description = $_POST['description'];
         $user = $_SESSION['user'];
-        $test_img = $_FILES['image_article'];
+        // $test_img = $_FILES['image_article'];
         $data_img = $_POST['image_cam'];
 
         // list($type, $data_img) = explode(';', $data_img);
@@ -83,12 +83,49 @@ elseif(isset($_POST['create_article']))
         $filename = md5(uniqid(rand('9999999','999999999999999'), true)).".{$type}";
         $newfile = dirname(__FILE__).'/assets/images/'.$filename;
         file_put_contents($newfile, $data_img);
-
         var_dump($filename);
 
 
+
+
+        $copy = imagecreatetruecolor(450, 450);
+
+        imagealphablending($copy, false);
+        imagesavealpha($copy, true );
+        $source = imagecreatefrompng('assets/montage/cat.png');
+
+        imagecopyresized($copy, $source, 0, 0, 0, 0, 100, 150, 100, 150);
+        
+        $destination = imagecreatefrompng('assets/images/'.$filename);
+
+
+        // $largeur_source = imagesx($source);
+        // $hauteur_source = imagesy($source);
+        // $largeur_destination = imagesx($destination);
+        // $hauteur_destination = imagesy($destination);
+        // var_dump("largeur source : ".$largeur_source." hauteur source : ". $largeur_source);
+        // var_dump("largeur dest : ".$largeur_destination." hauteur dest : ". $hauteur_destination);
+
+        $destination_x = 0;
+        $destination_y = 0;
+
+        function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct){
+            // creating a cut resource
+            $cut = imagecreatetruecolor($src_w, $src_h);
+            // copying relevant section from background to the cut resource
+            imagecopy($cut, $dst_im, 0, 0, $dst_x, $dst_y, $src_w, $src_h);
+            // copying relevant section from watermark to the cut resource
+            imagecopy($cut, $src_im, 0, 0, $src_x, $src_y, $src_w, $src_h);
+            // insert cut resource to destination image
+            imagecopymerge($dst_im, $cut, $dst_x, $dst_y, 0, 0, $src_w, $src_h, $pct);
+        }
+
+        imagecopymerge_alpha($destination, $copy, 270, 180, 0, 0, 100, 150, 100);
+
+        $success = imagepng($destination, "assets/montage/montage.png");
+
         $article = new Article;
-        $article->setImage($filename);
+        $article->setImage("montage.png");
         // $extension = array('jpg','jpeg','png', 'JPG', 'PNG', 'JPEG');
         // if((!empty($_FILES["image_article"])) && ($_FILES['image_article']['error'] == 0))
         // {

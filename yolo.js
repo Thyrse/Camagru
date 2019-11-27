@@ -5,7 +5,7 @@ window.addEventListener("load", function() {
         photo = document.querySelector('#photo'),
         startbutton = document.querySelector('#startbutton'),
         inputimg = document.querySelector('#img_web'),
-        width = 450,
+        width = 550,
         height = 0;
 
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })

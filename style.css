@@ -902,9 +902,24 @@ footer {
 
 /* PICUTRES */
 
+.take_picture {
+    border-top: 1px solid #dcdcdc;
+    padding-top: 20px;
+    text-align: center;
+}
+
 .take_picture,
-.take_picture #photo {
+.take_picture canvas {
     display: none;
+}
+
+.take_picture img[class^="picture_live"] {
+    width: 200px;
+    margin: 3px;
+}
+
+.take_picture img[class^="picture_live"]:first-child {
+    box-shadow: 0px 0px 5px 1px black;
 }
 
 .take_picture button {
@@ -955,4 +970,12 @@ footer {
 .picture_form .img_montage label,
 .picture_form .img_montage input {
     cursor: pointer;
+}
+
+.take_picture #list_live {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 620px;
+    margin: auto;
 }

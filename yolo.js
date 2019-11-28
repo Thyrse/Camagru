@@ -3,13 +3,27 @@ window.addEventListener("load", function() {
         video = document.querySelector('#video'),
         canvas = document.querySelector('#canvas'),
         photo = document.querySelector('#photo'),
+        list_live = document.querySelector('#list_live'),
         startbutton = document.querySelector('#startbutton'),
         inputimg = document.querySelector('#img_web'),
         width = 550,
         height = 0,
         input_img = document.querySelector("#manual_img"),
-        web_picture = document.querySelector(".take_picture");
+        web_picture = document.querySelector(".take_picture"),
+        i = 0,
+        form_radio = document.form_picture.montage_select,
+        checked = false;
 
+    if (checked === false) {
+        for (var i = 0; i < form_radio.length; i++) {
+            form_radio[i].onclick = function(e) {
+                if (e.target.checked === true) {
+                    checked = true;
+                    startbutton.disabled = false;
+                }
+            }
+        }
+    }
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
         .then(function(stream) {
             video.srcObject = stream;
@@ -59,6 +73,14 @@ window.addEventListener("load", function() {
         inputimg.setAttribute("value", data);
     }
 
+    function createList(data) {
+        var new_img = document.createElement("img");
+        new_img.setAttribute('class', "picture_live" + i);
+        new_img.setAttribute('src', data);
+        list_live.appendChild(new_img);
+        i++;
+    }
+
     function takepicture() {
         var context = canvas.getContext('2d');
         if (width && height) {
@@ -68,6 +90,7 @@ window.addEventListener("load", function() {
 
             var data = canvas.toDataURL('image/png;base64');
             photo.setAttribute('src', data);
+            createList(data);
             getDataURI();
         } else {
             clearphoto();

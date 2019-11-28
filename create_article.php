@@ -28,7 +28,7 @@ else
     <div id="main">
         <div class="create">
             <h3>Ajouter une photo</h3>
-            <form name="submit" method="post" action="action.php" enctype="multipart/form-data">
+            <form name="form_picture" method="post" action="action.php" enctype="multipart/form-data">
                 <div class="create_form">
                     <div class="picture_form">
                         <div class="img_montage"><label for="cat">Chat<img src="assets/montage/cat.png" alt="cat"/></label><input type="radio" id="cat" name="montage_select" value="cat">
@@ -54,10 +54,12 @@ else
             <div class="take_picture">
                 <video id="video"></video>
                 <div>
-                    <button id="startbutton">Prendre une photo</button>
+                    <button id="startbutton" disabled>Prendre une photo</button>
                 </div>
                 <canvas id="canvas"></canvas>
-                <img src="" id="photo" alt="photo">
+                <div id="list_live">
+                    <img src="" alt="photo" id="photo" class="picture_live">
+                </div>
             </div>
         </div>
     </div>

@@ -54,7 +54,6 @@ elseif(isset($_POST['create_article']))
         $description = $_POST['description'];
         $user = $_SESSION['user'];
         // $test_img = $_FILES['image_article'];
-        $data_img = $_POST['image_cam'];
 
         // list($type, $data_img) = explode(';', $data_img);
         // list(, $data_img) = explode(',', $data_img);
@@ -62,117 +61,176 @@ elseif(isset($_POST['create_article']))
         // $newname = dirname(__FILE__).'/assets/images/'.$filename;
         // file_put_contents($newname, $data_img);
 
-        var_dump($data_img);
-
-        if (preg_match('/^data:image\/(\w+);base64,/', $data_img, $type)) {
-            $data_img = substr($data_img, strpos($data_img, ',') + 1);
-            $type = strtolower($type[1]); // jpg, png, gif
-        
-            if (!in_array($type, [ 'jpg', 'jpeg', 'gif', 'png' ])) {
-                throw new \Exception('invalid image type');
+        // var_dump($data_img);
+        function make_montage($filename, $newfile, $ext)
+        {
+            $mtg_img = $_POST['montage_select'];
+            if ($mtg_img == "cat")
+            {
+                $selected_file = "assets/montage/cat.png";
+                $img_x = 100;
+                $img_y = 150;
+                $pos_x = 435;
+                $pos_y = 250;
             }
-        
-            $data_img = base64_decode($data_img);
-        
-            if ($data_img === false) {
-                throw new \Exception('base64_decode failed');
+            elseif ($mtg_img == "snow")
+            {
+                $selected_file = "assets/montage/snow.png";
+                $img_x = 550;
+                $img_y = 450;
+                $pos_x = 0;
+                $pos_y = 0;
             }
-        } else {
-            throw new \Exception('did not match data URI with image data');
+            elseif ($mtg_img == "sword")
+            {
+                $selected_file = "assets/montage/sword.png";
+                $img_x = 155;
+                $img_y = 260;
+                $pos_x = 30;
+                $pos_y = 50;
+            }
+            elseif ($mtg_img == "halo")
+            {
+                $selected_file = "assets/montage/halo.png";
+                $img_x = 130;
+                $img_y = 45;
+                $pos_x = 200;
+                $pos_y = 5;
+            }
+
+            $copy = imagecreatetruecolor(550, 450);
+
+            imagealphablending($copy, false);
+            imagesavealpha($copy, true);
+            $source = imagecreatefrompng($selected_file);
+
+            imagecopyresized($copy, $source, 0, 0, 0, 0, $img_x, $img_y, $img_x, $img_y);
+
+            switch ($ext) {
+                case "png":
+                    $destination = imagecreatefrompng('assets/images/'.$filename);
+                    break;
+                case "PNG":
+                    $destination = imagecreatefrompng('assets/images/'.$filename);
+                    break;
+                case "jpeg":
+                    $destination = imagecreatefromjpeg('assets/images/'.$filename);
+                    break;
+                case "jpg":
+                    $destination = imagecreatefromjpeg('assets/images/'.$filename);
+                    break;      
+                case "gif":
+                    $destination = imagecreatefromgif('assets/images/'.$filename);
+                    break;
+                }
+                // var_dump($destination);
+                // imageresolution($destination, 450, 450);
+
+            // $largeur_source = imagesx($source);
+            // $hauteur_source = imagesy($source);
+            // $largeur_destination = imagesx($destination);
+            // $hauteur_destination = imagesy($destination);
+            // var_dump("largeur source : ".$largeur_source." hauteur source : ". $largeur_source);
+            // var_dump("largeur dest : ".$largeur_destination." hauteur dest : ". $hauteur_destination);
+
+            // $destination_x = 0;
+            // $destination_y = 0;
+
+            function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct){
+                // creating a cut resource
+                $cut = imagecreatetruecolor($src_w, $src_h);
+                // copying relevant section from background to the cut resource
+                imagecopy($cut, $dst_im, 0, 0, $dst_x, $dst_y, $src_w, $src_h);
+                // copying relevant section from watermark to the cut resource
+                imagecopy($cut, $src_im, 0, 0, $src_x, $src_y, $src_w, $src_h);
+                // insert cut resource to destination image
+                imagecopymerge($dst_im, $cut, $dst_x, $dst_y, 0, 0, $src_w, $src_h, $pct);
+            }
+
+            imagecopymerge_alpha($destination, $copy, $pos_x, $pos_y, 0, 0, $img_x, $img_y, 100);
+
+            $success = imagepng($destination, $newfile);
         }
-        $filename = md5(uniqid(rand('9999999','999999999999999'), true)).".{$type}";
-        $newfile = dirname(__FILE__).'/assets/images/'.$filename;
-        file_put_contents($newfile, $data_img);
-        var_dump($filename);
+        if(isset($_POST['image_cam']))
+        {
+            $data_img = $_POST['image_cam'];
+            if (preg_match('/^data:image\/(\w+);base64,/', $data_img, $type)) {
+                $data_img = substr($data_img, strpos($data_img, ',') + 1);
+                $type = strtolower($type[1]); // jpg, png, gif
+            
+                if (!in_array($type, [ 'jpg', 'jpeg', 'gif', 'png' ])) {
+                    throw new \Exception('invalid image type');
+                }
+            
+                $data_img = base64_decode($data_img);
+            
+                if ($data_img === false) {
+                    throw new \Exception('base64_decode failed');
+                }
+            } else {
+                throw new \Exception('did not match data URI with image data');
+            }
+            $filename = md5(uniqid(rand('9999999','999999999999999'), true)).".{$type}";
+            $newfile = dirname(__FILE__).'/assets/images/'.$filename;
+            file_put_contents($newfile, $data_img);
 
-
-
-
-        $copy = imagecreatetruecolor(450, 450);
-
-        imagealphablending($copy, false);
-        imagesavealpha($copy, true );
-        $source = imagecreatefrompng('assets/montage/cat.png');
-
-        imagecopyresized($copy, $source, 0, 0, 0, 0, 100, 150, 100, 150);
-        
-        $destination = imagecreatefrompng('assets/images/'.$filename);
-
-
-        // $largeur_source = imagesx($source);
-        // $hauteur_source = imagesy($source);
-        // $largeur_destination = imagesx($destination);
-        // $hauteur_destination = imagesy($destination);
-        // var_dump("largeur source : ".$largeur_source." hauteur source : ". $largeur_source);
-        // var_dump("largeur dest : ".$largeur_destination." hauteur dest : ". $hauteur_destination);
-
-        $destination_x = 0;
-        $destination_y = 0;
-
-        function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct){
-            // creating a cut resource
-            $cut = imagecreatetruecolor($src_w, $src_h);
-            // copying relevant section from background to the cut resource
-            imagecopy($cut, $dst_im, 0, 0, $dst_x, $dst_y, $src_w, $src_h);
-            // copying relevant section from watermark to the cut resource
-            imagecopy($cut, $src_im, 0, 0, $src_x, $src_y, $src_w, $src_h);
-            // insert cut resource to destination image
-            imagecopymerge($dst_im, $cut, $dst_x, $dst_y, 0, 0, $src_w, $src_h, $pct);
+            make_montage($filename, $newfile, "png");
         }
-
-        imagecopymerge_alpha($destination, $copy, 270, 180, 0, 0, 100, 150, 100);
-
-        $success = imagepng($destination, "assets/montage/montage.png");
-
+        elseif(isset($_FILES['image_article']))
+        {
+            $extensions = array('jpg','jpeg','png', 'JPG', 'PNG', 'JPEG');
+            if((!empty($_FILES["image_article"])) && ($_FILES['image_article']['error'] == 0))
+            {
+                $uploaded = basename($_FILES['image_article']['name']);
+                $ext = substr($uploaded, strrpos($uploaded, '.') + 1);
+                $filename = md5(uniqid(rand('9999999','999999999999999'), true)).".{$ext}";
+                $checkbackdoor = explode(".", $filename);
+                if(count($checkbackdoor) - 1 > 1)
+                {
+                    echo "Problem dans le fichier";
+                }
+                else
+                {
+                    if (in_array($ext, $extensions) && ($_FILES["image_article"]["size"] < 350000))
+                    {
+                        $newname = dirname(__FILE__).'/assets/images/'.$filename;
+                        if (!file_exists($newname))
+                        {
+                            if ((move_uploaded_file($_FILES['image_article']['tmp_name'],$newname)))
+                            {
+                                echo "Photo de profil bien modifié";
+                            }
+                            else
+                            {
+                                echo "Impossible d'upload le fichier .";
+                            }
+                        }
+                        else
+                        {
+                            echo "Photo ajoutée";
+                        }
+                    }
+                    else
+                    {
+                        echo "Fichier pas au bon format";
+                    }
+                }
+            }
+            else
+            {
+                echo "Error: No file uploaded";
+            }
+            if (isset($_POST['montage_select']))
+            {
+                make_montage($filename, $newname, $ext);
+            }
+        }
         $article = new Article;
-        $article->setImage("montage.png");
-        // $extension = array('jpg','jpeg','png', 'JPG', 'PNG', 'JPEG');
-        // if((!empty($_FILES["image_article"])) && ($_FILES['image_article']['error'] == 0))
-        // {
-        //     $filename = basename($_FILES['image_article']['name']);
-        //     $checkbackdoor = explode(".", $filename);
-        //     if(count($checkbackdoor) - 1 > 1)
-        //     {
-        //         echo "Problem dans le fichier";
-        //     }
-        //     else
-        //     {
-        //         $ext = substr($filename, strrpos($filename, '.') + 1);
-        //         if (in_array($ext, $extension) && ($_FILES["image_article"]["type"] == "image/jpeg") && ($_FILES["image_article"]["size"] < 350000))
-        //         {
-        //             $newname = dirname(__FILE__).'/assets/images/'.$filename;
-        //             if (!file_exists($newname))
-        //             {
-        //                 if ((move_uploaded_file($_FILES['image_article']['tmp_name'],$newname)))
-        //                 {
-        //                     $article->setImage($filename);
-        //                     echo "Photo bien modifiée.";
-        //                 }
-        //                 else
-        //                 {
-        //                     echo "Impossible d'upload le fichier.";
-        //                 }
-        //             }
-        //             else
-        //             {
-        //   // existe deja
-        //                 $article->setImage($filename);
-        //                 echo "Photo de profil bien modifié.";
-        //             }
-        //         }
-        //         else
-        //         {
-        //             echo "Fichier pas au bon format.";
-        //         }
-        //     }
-        // }
-        // else
-        // {
-        //     echo "Error: No file uploaded.";
-        // }
+        $article->setImage($filename);
         $article->setDescription($description);
         $article->setUser($user);
         $article->article();
+        header('location: index.php');
         // if($article->status == "ok")
         //     header('location: create_article.php');
         // else

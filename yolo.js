@@ -6,16 +6,25 @@ window.addEventListener("load", function() {
         startbutton = document.querySelector('#startbutton'),
         inputimg = document.querySelector('#img_web'),
         width = 550,
-        height = 0;
+        height = 0,
+        input_img = document.querySelector("#manual_img"),
+        web_picture = document.querySelector(".take_picture");
 
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
         .then(function(stream) {
             video.srcObject = stream;
+            inputimg.setAttribute("name", "image_cam");
+            web_picture.style.display = "block";
             video.play();
         })
         .catch(function(err) {
             console.log("An error occurred: " + err);
+            console.log(err);
+            input_img.setAttribute("name", "image_article");
+            input_img.required = true;
+            input_img.hidden = false;
         });
+
 
     video.addEventListener('canplay', function(ev) {
         if (!streaming) {

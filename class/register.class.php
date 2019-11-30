@@ -39,7 +39,6 @@ class Register
     }
     function setMessage($message)
     {
-        // $message = "Bonjour, voici un nouveau mail ! http://localhost:8100/activation.php?token=".$this->token;
         $this->message = $message.$this->token;
     }
     function setSubject($subject)
@@ -55,39 +54,42 @@ class Register
     {
         return $this->token;
     }
-    function register()
+    function createUser()
     {
         global $bdd;
         if($this->username != NULL && $this->email != NULL && $this->password != NULL && $this->confirmation_password != NULL)
         {
             if($this->password == $this->confirmation_password)
             {
-                $select_users = $bdd->prepare("SELECT username FROM users WHERE username = :username");
-                $select_users->bindParam(':username', $this->username);
-                $select_users->execute();
-                $result = $select_users->fetch();
-                if($result['username'] == NULL)
+                if (preg_match("#.*^(?=.{8,50})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $this->password))
                 {
-                    // $data = date("y-m-d");
-                    $password = hash('whirlpool', 'terry la star'. $this->password);
-                    $insert = $bdd->prepare("INSERT INTO users(username,password,email,token) VALUES(:username, :password, :email, :token)");
-                    $insert->bindParam(':username', $this->username);
-                    $insert->bindParam(':password', $password);
-                    $insert->bindParam(':email', $this->email);
-                    $insert->bindParam(':token', $this->token);
-                    // $insert->bindParam(':creation_date', $data);
-                    $insert->execute();
-                    mail($this->email, $this->subject, $this->message, $this->entete);
-                    $_SESSION['success'] = "Utilisateur créé.";
+                    $select_users = $bdd->prepare("SELECT username FROM users WHERE username = :username");
+                    $select_users->bindParam(':username', $this->username);
+                    $select_users->execute();
+                    $result = $select_users->fetch();
+                    if($result['username'] == NULL)
+                    {
+                        // $data = date("y-m-d");
+                        $password = hash('whirlpool', 'terry la star'. $this->password);
+                        $insert = $bdd->prepare("INSERT INTO users(username,password,email,token) VALUES(:username, :password, :email, :token)");
+                        $insert->bindParam(':username', $this->username);
+                        $insert->bindParam(':password', $password);
+                        $insert->bindParam(':email', $this->email);
+                        $insert->bindParam(':token', $this->token);
+                        // $insert->bindParam(':creation_date', $data);
+                        $insert->execute();
+                        mail($this->email, $this->subject, $this->message, $this->entete);
+                        $_SESSION['success'] = "Utilisateur créé.";
+                    }
+                    else
+                        $_SESSION['error_reg'] = "Pseudo déjà pris.";
                 }
                 else
-                    $_SESSION['error_reg'] = "Pseudo déjà pris.";
+                    $_SESSION['error_reg'] = "Votre mot de passe doit contenir au minimum 8 caractères, incluant caractère spécial, majuscule, chiffre.";
             }
             else
                 $_SESSION['error_reg'] = "Les mots de passe ne correspondent pas !";
         }
-        // else
-        //     $_SESSION['error_reg'] = "Une erreur est survenue.";
     }
     function activate($token)
     {
@@ -112,7 +114,7 @@ class Register
 
         if($tokenid === '1')
         {
-            $_SESSION['activ_ok'] = "Votre compte est activé, vous pouvez maintenant accéder aux sites";
+            $_SESSION['activ_ok'] = "Votre compte est activé, vous pouvez maintenant accéder aux sites.";
         }
         else
         {
@@ -128,24 +130,31 @@ class Register
         {
             if($this->password == $this->confirmation_password)
             {
-                $pwdreplace = hash('whirlpool', 'terry la star'. $this->password);
-                $resetpwd = $bdd->prepare("UPDATE `users` SET `password` = :newpwd WHERE `users`.`id` = :id_user AND `users`.`reset` = :token");
-                $resetpwd->bindParam(':newpwd', $pwdreplace);
-                $resetpwd->bindParam(':token', $token, PDO::PARAM_STR);
-                $resetpwd->bindParam(':id_user', $id, PDO::PARAM_STR);
-                try {
-                    $resetpwd->execute();
-                    $deltoken = $bdd->prepare("UPDATE `users` SET `users`.`reset` = '' WHERE `users`.`id` = :id_user AND `users`.`reset` = :token");
-                    $deltoken->bindParam(':id_user', $id, PDO::PARAM_STR);
-                    $deltoken->bindParam(':token', $token, PDO::PARAM_STR);
-                    $deltoken->execute();
-                    $_SESSION['successp'] = "Mot de passe mis à jour.";
-                    $resetpwd->rowCount() ? $this->status = "ok" : $_SESSION['passwd'] = "Une erreur est survenue.";
+                if (preg_match("#.*^(?=.{8,50})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $this->password))
+                {
+                    $pwdreplace = hash('whirlpool', 'terry la star'. $this->password);
+                    $resetpwd = $bdd->prepare("UPDATE `users` SET `password` = :newpwd WHERE `users`.`id` = :id_user AND `users`.`reset` = :token");
+                    $resetpwd->bindParam(':newpwd', $pwdreplace);
+                    $resetpwd->bindParam(':token', $token, PDO::PARAM_STR);
+                    $resetpwd->bindParam(':id_user', $id, PDO::PARAM_STR);
+                    try {
+                        $resetpwd->execute();
+                        $deltoken = $bdd->prepare("UPDATE `users` SET `users`.`reset` = '' WHERE `users`.`id` = :id_user AND `users`.`reset` = :token");
+                        $deltoken->bindParam(':id_user', $id, PDO::PARAM_STR);
+                        $deltoken->bindParam(':token', $token, PDO::PARAM_STR);
+                        $deltoken->execute();
+                        $_SESSION['success'] = "Mot de passe mis à jour.";
+                        $resetpwd->rowCount() ? $this->status = "ok" : $_SESSION['error_reg'] = "Les mots de passe ne correspondent pas !";
+                    }
+                    catch (PDOException $e) {
+                        $_SESSION['error_reg'] = "Une erreur est survenue.";
+                    }
                 }
-                catch (PDOException $e) {
-                    $_SESSION['passwd'] = "Une erreur est survenue.";
-                }
+                else
+                    $_SESSION['error_reg'] = "Votre mot de passe doit contenir au minimum 8 caractères, incluant caractère spécial, majuscule, chiffre.";
             }
+            else
+                $_SESSION['error_reg'] = "Les mots de passe ne correspondent pas !";
         }
     }
 
@@ -160,17 +169,21 @@ class Register
             $catchedmail = $catchmail->fetch();
             if($catchedmail['username'] != NULL && $catchedmail['email'] != NULL)
             {
+                var_dump($catchedmail['username']);
+                var_dump($catchedmail['email']);
                 $addreset = $bdd->prepare("UPDATE `users` SET `reset` = :token WHERE `users`.`username` = :username AND `users`.`email` = :email");
                 $addreset->bindParam(':token', $this->token);
                 $addreset->bindParam(':username', $catchedmail['username']);
                 $addreset->bindParam(':email', $catchedmail['email']);
                 $addreset->execute();
                 mail($catchedmail['email'], $this->subject, $this->message."&id=".$catchedmail['id'], $this->entete);
+                $_SESSION['success'] = "Mail envoyé.";
             }
-            $_SESSION['successp'] = "Mot de passe mis à jour.";
+            else
+                $_SESSION['error_reg'] = "Une erreur est survenue.";
         }
         catch (PDOException $e) {
-            $_SESSION['passwd'] = "Une erreur est survenue.";
+            $_SESSION['error_reg'] = "Une erreur est survenue.";
         }
 
     }

@@ -140,24 +140,29 @@ class Userinfo
        {
            if($this->pwdreplace == $this->password)
            {
-            $_SESSION['passwd'] = "Saisir un nouveau mot de passe.";
+                $_SESSION['passwd'] = "Saisir un nouveau mot de passe.";
            }
            elseif($this->pwdreplace == $this->pwdconfirm)
            {
-                $password = hash('whirlpool', 'terry la star'.$this->password);
-                $pwdreplace = hash('whirlpool', 'terry la star'. $this->pwdreplace);
-                $update = $bdd->prepare("UPDATE users SET password = :newpwd WHERE id = :id_user AND password = :password");
-                $update->bindParam(':newpwd', $pwdreplace);
-                $update->bindParam(':password', $password);
-                $update->bindParam(':id_user', $this->user);
-                try {
-                    $update->execute();
-                    $_SESSION['successp'] = "Mot de passe mis à jour.";
-                    $update->rowCount() ? $this->status = "ok" : $_SESSION['passwd'] = "Une erreur est survenue.";
+                if (preg_match("#.*^(?=.{8,50})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $this->pwdreplace))
+                {
+                    $password = hash('whirlpool', 'terry la star'.$this->password);
+                    $pwdreplace = hash('whirlpool', 'terry la star'. $this->pwdreplace);
+                    $update = $bdd->prepare("UPDATE users SET password = :newpwd WHERE id = :id_user AND password = :password");
+                    $update->bindParam(':newpwd', $pwdreplace);
+                    $update->bindParam(':password', $password);
+                    $update->bindParam(':id_user', $this->user);
+                    try {
+                        $update->execute();
+                        $_SESSION['successp'] = "Mot de passe mis à jour.";
+                        $update->rowCount() ? $this->status = "ok" : $_SESSION['passwd'] = "Mot de passe incorrect.";
+                    }
+                    catch (PDOException $e) {
+                        $_SESSION['passwd'] = "Une erreur est survenue.";
+                   }
                 }
-                catch (PDOException $e) {
-                    $_SESSION['passwd'] = "Une erreur est survenue.";
-               }
+                else
+                    $_SESSION['passwd'] = "Votre mot de passe doit contenir au minimum 8 caractères, incluant caractère spécial, majuscule, chiffre..";
            }
            else
            {

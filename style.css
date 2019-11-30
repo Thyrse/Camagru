@@ -16,7 +16,7 @@ h3 {
     margin: 0;
 }
 
-#delete_confirm {
+.delete_confirm {
     text-align: center;
     color: #ff0000;
 }
@@ -166,7 +166,6 @@ a {
 }
 
 .items-list .item_empty {
-    display: none;
     font-size: 25px;
 }
 

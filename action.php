@@ -1,12 +1,9 @@
 <?php
-require_once('config/config.php');
+require_once('config/connect.php');
 require_once('class/register.class.php');
 require_once('class/connect.class.php');
 require_once('class/article.class.php');
 require_once('class/user.class.php');
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-
 
 if(isset($_POST['create_account']))
 {
@@ -16,7 +13,7 @@ if(isset($_POST['create_account']))
         $password = $_POST['password'];
         $confirm = $_POST['password_confirm'];
         $email = $_POST['email'];
-        $message = "Bonjour, voici un nouveau mail ! http://localhost:8100/activation.php?token=";
+        $message = "Bonjour, Veuillez cliquer sur le lien suivant pour activer votre compte et accéder au site :\n http://localhost:8100/activation.php?token=";
         $subject = "Activation de votre compte";
 
         $inscription = new Register;
@@ -28,7 +25,7 @@ if(isset($_POST['create_account']))
         $inscription->setMessage($message);
         $inscription->setSubject($subject);
         $inscription->setEntete();
-        $inscription->register();
+        $inscription->createUser();
         header('location: registration.php');
     }
     else
@@ -43,7 +40,7 @@ elseif(isset($_POST['login']))
     {
         $connexion->setUsername($_POST['username']);
         $connexion->setPassword($_POST['password']);
-        $connexion->connect();
+        $connexion->logUser();
         header('location: index.php');
     }
 }
@@ -53,15 +50,7 @@ elseif(isset($_POST['create_article']))
     {
         $description = $_POST['description'];
         $user = $_SESSION['user'];
-        // $test_img = $_FILES['image_article'];
 
-        // list($type, $data_img) = explode(';', $data_img);
-        // list(, $data_img) = explode(',', $data_img);
-        // $data_img = base64_decode($data_img);
-        // $newname = dirname(__FILE__).'/assets/images/'.$filename;
-        // file_put_contents($newname, $data_img);
-
-        // var_dump($data_img);
         function make_montage($filename, $newfile, $ext)
         {
             $mtg_img = $_POST['montage_select'];
@@ -123,27 +112,12 @@ elseif(isset($_POST['create_article']))
                     $destination = imagecreatefromgif('assets/images/'.$filename);
                     break;
                 }
-                // var_dump($destination);
-                // imageresolution($destination, 450, 450);
 
-            // $largeur_source = imagesx($source);
-            // $hauteur_source = imagesy($source);
-            // $largeur_destination = imagesx($destination);
-            // $hauteur_destination = imagesy($destination);
-            // var_dump("largeur source : ".$largeur_source." hauteur source : ". $largeur_source);
-            // var_dump("largeur dest : ".$largeur_destination." hauteur dest : ". $hauteur_destination);
-
-            // $destination_x = 0;
-            // $destination_y = 0;
 
             function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct){
-                // creating a cut resource
                 $cut = imagecreatetruecolor($src_w, $src_h);
-                // copying relevant section from background to the cut resource
                 imagecopy($cut, $dst_im, 0, 0, $dst_x, $dst_y, $src_w, $src_h);
-                // copying relevant section from watermark to the cut resource
                 imagecopy($cut, $src_im, 0, 0, $src_x, $src_y, $src_w, $src_h);
-                // insert cut resource to destination image
                 imagecopymerge($dst_im, $cut, $dst_x, $dst_y, 0, 0, $src_w, $src_h, $pct);
             }
 
@@ -156,19 +130,25 @@ elseif(isset($_POST['create_article']))
             $data_img = $_POST['image_cam'];
             if (preg_match('/^data:image\/(\w+);base64,/', $data_img, $type)) {
                 $data_img = substr($data_img, strpos($data_img, ',') + 1);
-                $type = strtolower($type[1]); // jpg, png, gif
+                $type = strtolower($type[1]); // jpg, png
             
                 if (!in_array($type, [ 'jpg', 'jpeg', 'gif', 'png' ])) {
-                    throw new \Exception('invalid image type');
+                    $_SESSION['error_upload'] = "Seule une image au format jpg, jpeg ou png est attendue.";
+                    header('location: create_article.php');
+                    return;
                 }
             
                 $data_img = base64_decode($data_img);
             
                 if ($data_img === false) {
-                    throw new \Exception('base64_decode failed');
+                    $_SESSION['error_upload'] = "Une erreur est survenue, veuillez réessayer.";
+                    header('location: create_article.php');
+                    return;
                 }
             } else {
-                throw new \Exception('did not match data URI with image data');
+                $_SESSION['error_upload'] = "Veuillez prendre une photo.";
+                header('location: create_article.php');
+                return;
             }
             $filename = md5(uniqid(rand('9999999','999999999999999'), true)).".{$type}";
             $newfile = dirname(__FILE__).'/assets/images/'.$filename;
@@ -178,7 +158,7 @@ elseif(isset($_POST['create_article']))
         }
         elseif(isset($_FILES['image_article']))
         {
-            $extensions = array('jpg','jpeg','png', 'JPG', 'PNG', 'JPEG');
+            $extensions = array('jpg','jpeg','png','JPG','PNG','JPEG');
             if((!empty($_FILES["image_article"])) && ($_FILES['image_article']['error'] == 0))
             {
                 $uploaded = basename($_FILES['image_article']['name']);
@@ -187,32 +167,37 @@ elseif(isset($_POST['create_article']))
                 $checkbackdoor = explode(".", $filename);
                 if(count($checkbackdoor) - 1 > 1)
                 {
-                    echo "Problem dans le fichier";
+                    $_SESSION['error_upload'] = "Fichier incorrect, veuillez réessayer.";
+                    header('location: create_article.php');
+                    return;
                 }
                 else
                 {
-                    if (in_array($ext, $extensions) && ($_FILES["image_article"]["size"] < 350000))
+                    if (in_array($ext, $extensions))
                     {
                         $newname = dirname(__FILE__).'/assets/images/'.$filename;
                         if (!file_exists($newname))
                         {
                             if ((move_uploaded_file($_FILES['image_article']['tmp_name'],$newname)))
                             {
-                                echo "Photo de profil bien modifié";
+                                echo "Photo ajoutée.";
                             }
                             else
                             {
-                                echo "Impossible d'upload le fichier .";
+                                echo "Impossible d'upload le fichier.";
                             }
                         }
                         else
                         {
-                            echo "Photo ajoutée";
+                            echo "Photo ajoutée.";
                         }
                     }
                     else
                     {
-                        echo "Fichier pas au bon format";
+                        echo "Le fichier n'est pas au bon format.";
+                        $_SESSION['error_upload'] = "Seule une image au format jpg, jpeg ou png est attendue.";
+                        header('location: create_article.php');
+                        return;
                     }
                 }
             }
@@ -229,15 +214,8 @@ elseif(isset($_POST['create_article']))
         $article->setImage($filename);
         $article->setDescription($description);
         $article->setUser($user);
-        $article->article();
+        $article->createArticle();
         header('location: index.php');
-        // if($article->status == "ok")
-        //     header('location: create_article.php');
-        // else
-        // {
-        //     echo $article->status;
-        //     echo "NON";
-        // }
     }
     else
     {
@@ -259,13 +237,7 @@ elseif(isset($_POST['insert_comment']))
         $commentary->setSubject();
         $commentary->setEntete();
         $commentary->addCommentary();
-        if($commentary->status == "ok")
-            header('location: index.php');
-        else
-        {
-            echo $commentary->status;
-            echo "Bah non";
-        }
+        header('location: ' . $_SERVER['HTTP_REFERER']);
     }
     else
     {
@@ -320,11 +292,11 @@ elseif(isset($_POST['opinion']))
 {
     $user = $_SESSION['user'];
     $article_id = $_POST['article_id'];
-    $commentary = new Article;
-    $commentary->setUser($user);
-    $commentary->setPublication($article_id);
-    $commentary->addLike();
-    header('location: index.php');
+    $like = new Article;
+    $like->setUser($user);
+    $like->setPublication($article_id);
+    $like->addLike();
+    header('location: ' . $_SERVER['HTTP_REFERER']);
 }
 elseif(isset($_POST['newsletter_update']))
 {
@@ -332,10 +304,10 @@ elseif(isset($_POST['newsletter_update']))
     {
         $newsletter = $_POST['newsletter'];
         $user = $_SESSION['user'];
-        $commentary = new Userinfo;
-        $commentary->setUser($user);
-        $commentary->setNewsletter($newsletter);
-        $commentary->updatenews();
+        $newsupdate = new Userinfo;
+        $newsupdate->setUser($user);
+        $newsupdate->setNewsletter($newsletter);
+        $newsupdate->updatenews();
         header('location: account.php');
     }
     else
@@ -355,7 +327,7 @@ elseif(isset($_POST['reset_pwd']))
         $updatepwd->setPassword($password);
         $updatepwd->setConfirmpass($new_pwd);
         $updatepwd->resetpwd($token, $id);
-        header('location: registration.php');
+        header('location: ' . $_SERVER['HTTP_REFERER']);
     }
     else
     {
@@ -367,7 +339,7 @@ elseif(isset($_POST['reset_username']))
     if($_SESSION['token'] == $_POST['form_token'])
     {
         $username = $_POST['username'];
-        $message = "Bonjour, vous pouvez réinitialiser votre mot de passer à l'aide du lien suivant : http://localhost:8100/registration.php?action=reset_password&token=";
+        $message = "Bonjour, vous pouvez réinitialiser votre mot de passe à l'aide du lien suivant :\n http://localhost:8100/registration.php?action=reset_password&token=";
         $subject = "Réinitialisation de mot de passe";
 
         $catchmail = new Register;
@@ -377,11 +349,13 @@ elseif(isset($_POST['reset_username']))
         $catchmail->setSubject($subject);
         $catchmail->setEntete();
         $catchmail->sendmail();
-        header('location: registration.php');
+        header('location: ' . $_SERVER['HTTP_REFERER']);
     }
     else
     {
         header('location: account.php');
     }
 }
+else
+    header('location: index.php');
 ?>

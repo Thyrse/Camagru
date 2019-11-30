@@ -1,9 +1,7 @@
 <?php
-require_once('config/config.php');
+require_once('config/connect.php');
 require_once('class/user.class.php');
 require_once('class/register.class.php');
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
 if(isset($_SESSION['user']))
 {
     header('location: index.php');

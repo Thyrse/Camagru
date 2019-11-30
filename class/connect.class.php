@@ -14,7 +14,7 @@ class Connect
         $this->password = $password;
     }
 
-    function connect()
+    function logUser()
     {
         global $bdd;
         

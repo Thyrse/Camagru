@@ -9,8 +9,6 @@ class Article
 	private $pages;
 	private $secure;
 
-	public $status;
-
 	function setImage($image)
 	{
 		$this->image = $image;
@@ -35,7 +33,7 @@ class Article
 	}
 	function setMessage()
     {
-        $message = "Bonjour, vous avez un nouveau commentaire !";
+        $message = "Bonjour, vous avez un nouveau commentaire sur une publication vous appartenant, rendez-vous sur le site pour le découvrir !";
         $this->message = $message;
     }
     function setSubject()
@@ -80,12 +78,7 @@ class Article
 	{
 		return $this->pages;
 	}
-	// function setToken()
-	// {
-	//     $token = rand('9999999','999999999999999');
-	//     $this->token = $token;
-	// }
-	function article()
+	function createArticle()
 	{
 
 		global $bdd;
@@ -96,7 +89,6 @@ class Article
 			$article->bindParam(':description', $this->description);
 			$article->bindParam(':user', $this->user);
 			$article->execute();
-			$this->status = "ok";
 		}
 	}
 
@@ -125,8 +117,7 @@ class Article
 			$article->bindParam(':content', $this->content);
 			$article->bindParam(':id_user', $this->user);
 			$article->bindParam(':id_publication', $this->publication);
-			$article->execute();
-			$this->status = "ok";		
+			$article->execute();	
 			$newsletter = $bdd->prepare("SELECT `users`.`email`, `users`.`newsletter`, `publication`.`id_user` FROM `users` INNER JOIN `publication` ON `publication`.`id_user` = `users`.`id` WHERE `publication`.`id` = :id_publication");
 			$newsletter->bindParam(':id_publication', $this->publication);
 			$newsletter->execute();
@@ -167,10 +158,6 @@ class Article
 		$liked->execute();
 		$alllikes = $liked->fetch();
 		return $alllikes;
-		// if($alllikes['id_user'] == $this->user)
-		// 	return $this->status = 1;
-		// else
-		// 	return $this->status = 0;
 	}
 
 

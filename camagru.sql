@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3307
--- Generation Time: Nov 27, 2019 at 11:11 AM
+-- Generation Time: Nov 30, 2019 at 10:01 AM
 -- Server version: 5.6.43
 -- PHP Version: 5.6.40
 
@@ -79,7 +79,9 @@ INSERT INTO `commentary` (`id`, `content`, `id_user`, `id_publication`) VALUES
 (54, 'bite', 9, 41),
 (55, 'youlou', 9, 67),
 (56, 'efwf', 9, 67),
-(57, 'Salut ca va ?', 9, 33);
+(57, 'Salut ca va ?', 9, 33),
+(59, 'Salut', 9, 341),
+(68, 'Yo', 9, 347);
 
 -- --------------------------------------------------------
 
@@ -104,29 +106,14 @@ INSERT INTO `opinion` (`id`, `id_user`, `id_publication`) VALUES
 (27, 26, 17),
 (33, 13, 65),
 (34, 29, 67),
-(35, 29, 66);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `publi`
---
-
-CREATE TABLE `publi` (
-  `id` int(11) NOT NULL,
-  `description` text NOT NULL,
-  `image` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `publi`
---
-
-INSERT INTO `publi` (`id`, `description`, `image`) VALUES
-(1, 'yolo', 'ui'),
-(2, 'erttetr', 'erter'),
-(3, 'sfd', 'sfdsf'),
-(4, 'terry', 'ui');
+(35, 29, 66),
+(39, 9, 351),
+(42, 9, 347),
+(43, 9, 343),
+(44, 9, 342),
+(45, 9, 345),
+(47, 9, 355),
+(49, 9, 356);
 
 -- --------------------------------------------------------
 
@@ -333,7 +320,131 @@ INSERT INTO `publication` (`id`, `image`, `description`, `id_user`, `nb_like`, `
 (225, 'montage.png', 'dsdsdad', 9, 0, 0),
 (226, 'montage.png', 'dsdsdad', 9, 0, 0),
 (227, 'montage.png', 'dsdsdad', 9, 0, 0),
-(228, 'montage.png', 'dsdsdad', 9, 0, 0);
+(228, 'montage.png', 'dsdsdad', 9, 0, 0),
+(229, 'montage.png', 'Halo', 9, 0, 0),
+(230, 'montage.png', 'Halo', 9, 0, 0),
+(231, 'montage.png', 'Halo', 9, 0, 0),
+(232, 'montage.png', 'Halo', 9, 0, 0),
+(233, 'montage.png', 'Halo', 9, 0, 0),
+(234, 'montage.png', 'Halo', 9, 0, 0),
+(235, '/Users/tefourge/http/MyWebSite/assets/images/635f2', 'Halo', 9, 0, 0),
+(236, '80f78549e182992778ac4f7d9c5ab2c9.png', 'Halo', 9, 0, 0),
+(237, 'be6aa36ab25cdce9111945ae4de7ef1b.png', 'Cat', 9, 0, 0),
+(238, 'f33367e0bcb7266ccb29c5e7d11210ca.png', 'dsdsd', 9, 0, 0),
+(239, 'b11904d00001e56ab75f0c1a31a54dd9.png', 'dasdad', 9, 0, 0),
+(240, 'aee55d53c14123d8a6097bae6efa7346.png', 'gn', 9, 0, 0),
+(241, 'e87aa5bd89f41eb686b7055c102c48aa.png', 'dsaas', 9, 0, 0),
+(242, 'd67a15a41ea5884d9ec0a8a527de20b1.png', 'sfsf', 9, 0, 0),
+(243, '15b45163c9b77147cb429aa2dd1c9bb4.png', 'sfdfs', 9, 0, 0),
+(244, 'd1249bf9d22b65358023b3d173ee4631.png', 'asdasd', 9, 0, 0),
+(245, 'e63a9157a69e028b835a688cfdacbe0e.png', 'sdfsf', 9, 0, 0),
+(246, 'e6b5c5978ceb1320dc31ef6f9b69d210.png', 'dsfsdf', 9, 0, 0),
+(247, 'f9614a1b6621d0650af819c49864a1a3.png', 'asdad', 9, 0, 0),
+(248, 'b9077c04b40838dd1db08cd49ba55ee5.png', 'sdsadasd', 9, 0, 0),
+(249, 'bf12d772357732baa5fba2e0bdf3660b.png', 'gggr', 9, 0, 0),
+(250, '708f0cdec57dbf8f78f228ca9da05806.png', 'Test ?', 9, 0, 0),
+(251, 'ebbac8cc599450bc437d8ce539dc900c.png', 'cscscs', 9, 0, 0),
+(252, '15a7d0e732cc984ebeb9953b7089aa76.png', 'aureole', 9, 0, 0),
+(253, '13a2796b3a2c933b1983fef3e80a8180.png', 'chat', 9, 0, 0),
+(254, '5102d4c074aeabb6f3e74213f244223c.png', 'sfdsdf', 9, 0, 0),
+(255, '8036baf14726c86a430405ea2105f27c.png', 'asdasd', 9, 0, 0),
+(256, '9104346ab6849a59b5cd5e0a7feb2962.png', 'dvdfv', 9, 0, 0),
+(257, '25a2c4882ee0e83cfa5e0bb209eda0f8.png', 'neige', 9, 0, 0),
+(258, 'da33028c6210b9098fab4f149d42ee59.png', 'das', 9, 0, 0),
+(259, '6d650e73979ec77249ea5e7c7bd0afbe.png', 'adad', 9, 0, 0),
+(260, 'fd137f483769467d7fa5c05b32153ef5.png', 'dad', 9, 0, 0),
+(261, '7dd56a7cbe5b60ae4d7edc3a2ad15210.png', 'adads', 9, 0, 0),
+(262, 'f67d0f6c250d886e2f68e062dae7fbe9.png', 'asdasdads', 9, 0, 0),
+(263, '339540b0c28f99a4fb7e5d7c295f3bba.png', 'sdfsdf', 9, 0, 0),
+(264, '36fe865827dc1d7d1f189dd12f110908.png', 'asd', 9, 0, 0),
+(265, 'f9f59a48377be8e5e6acb5bdfaccd111.png', 'sadasd', 9, 0, 0),
+(266, '276afec4f249c5acafd45ee9953d02b5.png', 'asdasd', 9, 0, 0),
+(267, '72feb5905677e3880c732cc8783bf31b.png', 'sdfsdf', 9, 0, 0),
+(268, 'b43386e93e93742e61ed47c0eeaa4a5a.png', 'sdfsdf', 9, 0, 0),
+(269, '641f4769a0a86e12722cc27232d32c3a.png', 'sdfsf', 9, 0, 0),
+(270, '2ad3110c157547aeb34d6e55b310bc02.png', 'sdf', 9, 0, 0),
+(271, '33ba6e461805b9a1e5902c3c9ff79851.png', 'dsfsf', 9, 0, 0),
+(272, '0d81de4c97e07c72a7565f267f4aff4f.png', 'sdfsdf', 9, 0, 0),
+(273, '1ba9c9ac2dbb4fa612261084553d81b9.png', 'sdsd', 9, 0, 0),
+(274, 'd2e7aa31a9ab1059f9665243c8525767.png', 'sdfsdf', 9, 0, 0),
+(275, 'a4d09cc8d249254322fd1d0f085ac52b.png', 'sdfsdfsf', 9, 0, 0),
+(276, '6f873a53371dd7d2bd3fa612ebdb28ff.png', 'asdasdads', 9, 0, 0),
+(277, 'a97d64e77f2b69b63d77a3c3f52bfbce.png', 'sdfsfd', 9, 0, 0),
+(278, '44e793798974c425d884435438829844.png', 'sdfsdf', 9, 0, 0),
+(279, 'f75fb10a41ffbdd4607ed9eb85598bcf.png', 'vsddv', 9, 0, 0),
+(280, '13c2c561e3ddf6deba78eee3a3a6a026.png', 'sffsdf', 9, 0, 0),
+(281, '41957216db21cdbc94b9f0d1637177d3.png', 'asdads', 9, 0, 0),
+(282, '40333e83b3e182e8ac668939e3587189.png', 'daSSAD', 9, 0, 0),
+(283, 'pika.jpg', 'Salut', 9, 0, 0),
+(284, '0701c942f8fd3cee10c0c1f8abcf041a.png', 'asdasd', 9, 0, 0),
+(285, '2b55c92714365da720d0c2d35828ec55.png', 'sdasdasd', 9, 0, 0),
+(286, 'ca6e2f0617d1ee38b98384af53b92e83.png', 'scasasc', 9, 0, 0),
+(287, 'df026cc791c32eb8a44b2540aff7aca4.png', 'scasasc', 9, 0, 0),
+(288, 'pika.jpg', 'asdasd', 9, 0, 0),
+(289, 'pika.jpg', 'sdfsdfd', 9, 0, 0),
+(290, 'img.png', 'Png donné', 9, 0, 0),
+(291, '0d81de4c97e07c72a7565f267f4aff4f.png', 'asdada', 9, 0, 0),
+(292, '0d81de4c97e07c72a7565f267f4aff4f.png', 'sfdsdffs', 9, 0, 0),
+(293, 'pika.jpg', 'asdadasda', 9, 0, 0),
+(294, 'pika.jpg', 'asdasd', 9, 0, 0),
+(295, 'pika.jpg', 'Bon format ou pas ?', 9, 0, 0),
+(296, 'pika.jpg', 'adsasdad', 9, 0, 0),
+(297, 'pika.jpg', 'dscsds fsdf', 9, 0, 0),
+(298, 'pika.jpg', 'From download and nothing selected', 9, 0, 0),
+(299, 'pika.jpg', 'From images and nothing selected', 9, 0, 0),
+(300, 'illu.jpg', 'sdfsfsdfsf', 9, 0, 0),
+(301, 'bd2470726658eb4eca4a0350dd09e25e.', 'sdfsfsdfsf', 9, 0, 0),
+(302, 'illu.jpg', 'sdfsfsdfsf', 9, 0, 0),
+(303, 'img.png', 'PNG ?', 9, 0, 0),
+(304, 'pika.jpg', 'sdfsfsdf', 9, 0, 0),
+(305, 'img.png', 'sdfsdfsf', 9, 0, 0),
+(306, 'img.png', 'sdfsdfsf', 9, 0, 0),
+(307, 'd9b0fae8f3d0814b44d2ff94a943cdf1.', 'sdfsdfsf', 9, 0, 0),
+(308, 'img.png', 'sdfsdfsf', 9, 0, 0),
+(309, 'img.png', 'sdfsdfsf', 9, 0, 0),
+(310, 'pika.jpg', 'Renommage', 9, 0, 0),
+(311, 'img.png', 'Renommage PNG ?', 9, 0, 0),
+(312, '674fcf282af82860ac0db31429815661.png', 'Renommage PNG ?', 9, 0, 0),
+(313, '13e4b08b3b42456d700768d479723f59.png', 'Renommage PNG qui fonctionne ?', 9, 0, 0),
+(314, '2069d85d7f10c27b1be2fb7d62739a24.jpg', 'Renommage variables', 9, 0, 0),
+(315, '471b4154e9fca19624d4b4db196278a4.png', 'Renommage variables PNG', 9, 0, 0),
+(316, '6b29d90f828beaf0c8dc59772cdccb3f.jpg', 'Salut je veux l\'extension', 9, 0, 0),
+(317, 'e571e8a8e512963ac21d7622e3022d8e.jpg', 'Salut ca fonctionne ou pas alors ?', 9, 0, 0),
+(318, '03fbd49f7604787952f0030b3347397a.png', 'Yo', 9, 0, 0),
+(319, '9bba3167989481dd143f75b52644d3ed.png', 'Ange', 9, 0, 0),
+(320, '444508f6f9692dfca897ea9f6f1e79a8.png', 'Salut', 9, 0, 0),
+(321, '22aa19aa31ce0703697c7a3fc9673d93.jpg', 'sdfsdfsfdsf', 9, 0, 0),
+(322, '825c6888b1f8e9a7ea5766c2df00e589.png', 'Chat', 9, 0, 0),
+(323, 'cd5cecfa543d567491bd8512619e0dea.jpg', 'Resize ?', 9, 0, 0),
+(324, '9bd4a1f39501777308079e20c00293d5.jpg', 'Resize ?', 9, 0, 0),
+(325, 'c18d2a32cdb0a8614d8b5961334185ce.jpg', 'efsdfsd', 9, 0, 0),
+(326, 'e5afa076cdbfa2b2c2c57c488473b750.jpg', 'asdasd', 9, 0, 0),
+(327, '506fc13c40acff0ad9f1abb1c620916c.jpg', 'Resize ?', 9, 0, 0),
+(328, '0aebe31db2c35efe158e05bcf0b5def7.jpg', 'Resize ?', 9, 0, 0),
+(329, '50f152dbd66dfa6dac0a115d11a828a4.jpg', 'Resize ?', 9, 0, 0),
+(330, '559fd42a3e8806491b76446fb4626a8c.jpg', 'Resize ?', 9, 0, 0),
+(331, '01aeecd62a00814db92bf60989c46e88.jpg', 'Resize ?', 9, 0, 0),
+(332, '63b3e546f725b64f93590f84a7630f8b.jpg', 'dsadasd', 9, 0, 0),
+(333, '0074ea3760fdc6f40b3722f287a9cef7.jpg', 'sdsdsd', 9, 0, 0),
+(334, '6133c589c2545bd7ad571b330deffdc9.jpg', 'Ahri', 9, 0, 0),
+(335, '2f4e3be7b75ed31297afafb26c0dc6a5.jpg', 'Ahri', 9, 0, 0),
+(336, '98903f1b2d8737c9f23e97db43b4bb7e.png', 'dads', 9, 0, 0),
+(337, 'b8c8c92b3e0aa694baa351405cb87060.jpg', 'aasdasd', 9, 0, 0),
+(338, '6c8719a3a67d6781d35c19882aa29ff3.jpg', 'Alors ca resize ?', 9, 0, 0),
+(339, 'a398d2233884434919b4d5139651f465.png', 'sfsfsdf', 9, 0, 0),
+(340, '12e015ef55230d954525438f83239923.png', 'sfdsdf', 9, 0, 0),
+(341, '0ef19b88879c613244c379ec0848fc1f.jpg', 'asddas', 9, 0, 0),
+(342, 'fa38e58d7a4244ead1d2a4dcf14a037b.jpg', 'asddas', 9, 0, 0),
+(343, '8d1df631641438477814e501701e7057.jpg', 'fssdf', 9, 0, 0),
+(344, '72046afe561ccc2412dcc4f86a00ddbf.jpg', 'adsasdas', 9, 0, 0),
+(345, '2147a756329503fae1de631ade866227.jpg', 'adssad', 9, 0, 0),
+(346, '51022a3c4979bb3dfe61274f0c9cd242.png', 'asdasd', 9, 0, 0),
+(347, 'db8afee990e3aeb38a522d6699948a39.png', 'acasc', 9, 0, 0),
+(348, '1c7e4e9cb526c2a87b92fa1acb20d86a.png', 'sfdsdfsdfsdf', 9, 0, 0),
+(351, '1fbeb02533ef3ef09b447e687d203fa5.png', 'egdgsg', 9, 0, 0),
+(354, '6e34262c790d1f9bb8126b4af0d2e487.png', 'Salut', 9, 0, 0),
+(355, '27a0e58ecdf31cc95b22a196e66f2372.jpg', 'Eh ui', 9, 0, 0),
+(356, 'fd9df488def9dcd2206d5d667b02fbe6.jpg', 'Salut c\'est moi', 9, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -363,7 +474,7 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `reset`, `newsletter
 (6, 'hihihihihihi', 'tefourge@student.42', 'a1e1b5aa9f66a10f2ad331cbaec6a497f1a07d5221fe9975e6c8656ee53405acd9f0cb75d62e7a020eee71f3ff58b644128f03eaf96dcb0b61e1939ff5f819cc', '', 1, '', 1),
 (7, 'Yolo', 'tefourge@student.42.fr', '474cfecaf9f7306a87fe1c8b107626e046cc2b208f6682cc00ffbbd455dc2f5e18bdefc860705f274399e8a3d4da1a64e59336d4ac8a6ac3bfe2cc7e483d612f', 'dfgdsdgh', 1, '', 1),
 (8, 'tt', 'terry.fourgeux@gmail', '474cfecaf9f7306a87fe1c8b107626e046cc2b208f6682cc00ffbbd455dc2f5e18bdefc860705f274399e8a3d4da1a64e59336d4ac8a6ac3bfe2cc7e483d612f', '', 1, '', 1),
-(9, 'zokoy', 'tfourgeux42@gmail.com', 'caf00c4ee8f3fce3c48393d402ae7ccd3dfc388d4bd382175acb16a5d9884a46de78f0c9c794eb79b0f67c339f0e0d19467b928ac3fcdbb66ebaf71a17ee2e5d', '', 1, '', 1),
+(9, 'zokoy', 'tfourgeux42@gmail.com', 'dd0f151b03bb5c53e5981c109f5e5535dd75d68a57a1f4e45fe13da1a552f7b512cd00b0f5e4ad6164b318d6246d235d0490d454706179adf6f5ddbfc0cb7931', '7ea96f4a9b396617fd8de846cebac03c', 1, '', 1),
 (10, 'thyrsef', '', '474cfecaf9f7306a87fe1c8b107626e046cc2b208f6682cc00ffbbd455dc2f5e18bdefc860705f274399e8a3d4da1a64e59336d4ac8a6ac3bfe2cc7e483d612f', '', 1, '', 1),
 (11, 'yooo', 'tefourge@student.42.fr', '474cfecaf9f7306a87fe1c8b107626e046cc2b208f6682cc00ffbbd455dc2f5e18bdefc860705f274399e8a3d4da1a64e59336d4ac8a6ac3bfe2cc7e483d612f', '', 1, '', 1),
 (12, 'dududu', 'tefourge@student.42.', '474cfecaf9f7306a87fe1c8b107626e046cc2b208f6682cc00ffbbd455dc2f5e18bdefc860705f274399e8a3d4da1a64e59336d4ac8a6ac3bfe2cc7e483d612f', '', 1, '', 1),
@@ -385,7 +496,9 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `reset`, `newsletter
 (54, 'Abel', 'tefourge@student.42.fr', '6884df4a07b1b0c36742cc6e100a0233afacced227b8d72a274e03e8701ff2cb9c857fdf33a112f88ef61add9941f8d8911ab77663944986edf91c235c2fcce8', '', 1, '68339ad0061685a97e76b56a636c915e', 1),
 (55, 'youpih', 'tefourge@student.42.fr', '474cfecaf9f7306a87fe1c8b107626e046cc2b208f6682cc00ffbbd455dc2f5e18bdefc860705f274399e8a3d4da1a64e59336d4ac8a6ac3bfe2cc7e483d612f', '', 0, 'f4b3c6ce02563d55d59fcfe6a522255f', 1),
 (56, 'youuuhu', 'tefourge@student.42.fr', '474cfecaf9f7306a87fe1c8b107626e046cc2b208f6682cc00ffbbd455dc2f5e18bdefc860705f274399e8a3d4da1a64e59336d4ac8a6ac3bfe2cc7e483d612f', '', 1, '8afad9e92f39ab498fcdb7dd07f6b80d', 1),
-(57, 'usidowfhw', 'tefourge@student.42.fr', '474cfecaf9f7306a87fe1c8b107626e046cc2b208f6682cc00ffbbd455dc2f5e18bdefc860705f274399e8a3d4da1a64e59336d4ac8a6ac3bfe2cc7e483d612f', '', 1, 'dd8603cf704b6e425a5f7a3c41a198b1', 0);
+(57, 'usidowfhw', 'tefourge@student.42.fr', '474cfecaf9f7306a87fe1c8b107626e046cc2b208f6682cc00ffbbd455dc2f5e18bdefc860705f274399e8a3d4da1a64e59336d4ac8a6ac3bfe2cc7e483d612f', '', 1, 'dd8603cf704b6e425a5f7a3c41a198b1', 0),
+(58, 'salutoui', 'tefourge@student.42.fr', 'dd0f151b03bb5c53e5981c109f5e5535dd75d68a57a1f4e45fe13da1a552f7b512cd00b0f5e4ad6164b318d6246d235d0490d454706179adf6f5ddbfc0cb7931', '', 1, '87df03f15de8dc7e1b79f442f16fd335', 1),
+(59, 'sdsadadad', 'tefourge@student.42.fr', 'dd0f151b03bb5c53e5981c109f5e5535dd75d68a57a1f4e45fe13da1a552f7b512cd00b0f5e4ad6164b318d6246d235d0490d454706179adf6f5ddbfc0cb7931', '', 1, 'a97e4acd7fee4608f8c4715aa4a556c2', 0);
 
 --
 -- Indexes for dumped tables
@@ -406,12 +519,6 @@ ALTER TABLE `opinion`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_user` (`id_user`),
   ADD KEY `id_publication` (`id_publication`);
-
---
--- Indexes for table `publi`
---
-ALTER TABLE `publi`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `publication`
@@ -435,31 +542,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `commentary`
 --
 ALTER TABLE `commentary`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `opinion`
 --
 ALTER TABLE `opinion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
-
---
--- AUTO_INCREMENT for table `publi`
---
-ALTER TABLE `publi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `publication`
 --
 ALTER TABLE `publication`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=357;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- Constraints for dumped tables

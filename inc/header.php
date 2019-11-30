@@ -42,9 +42,6 @@ include('core/restrict.php');
     <h3>Votre compte</h3>
     <div class="user_actions">
         <div><a href="account.php">Informations du compte</a></div>
-        <div><a href="#">Créer une catégorie</a></div>
-        <div><a href="#">Ajouter un produit</a></div>
-        <div><a href="#">Modifier un produit</a></div>
-        <div><a href="#">Modifier un utilisateur</a></div>
+        <div><a href="create_article.php">Créer une publication</a></div>
     </div>
 </div>

@@ -1,5 +1,5 @@
 <?php
-require_once('config/config.php');
+require_once('config/connect.php');
 require_once('class/user.class.php');
 if(isset($_SESSION['user']))
 {
@@ -18,7 +18,9 @@ else
 <head>
     <title>Ajouter une photo</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
-    <script type="text/javascript" src="yolo.js"></script>
+    <link rel="icon" type="image/png" href="assets/images/logo.png" />
+    <script type="text/javascript" src="picture.js"></script>
+    <script type="text/javascript" src="script.js"></script>
 </head>
 
 <body>
@@ -43,9 +45,14 @@ else
                     <label for="description">Légende : </label>
                     <textarea name="description" rows="8" cols="21" placeholder="Description..." required></textarea>
                     <label for="image">Image :</label>
+                    <?php if(isset($_SESSION['error_upload']) && $_SESSION['error_upload'] !== false) : ?>
+                    <div class="msg_error"><p><?= $_SESSION['error_upload']; $_SESSION['error_upload'] = false; ?></p></div>
+                    <?php endif ?>
                     <input type="file" id="manual_img" hidden>
                     <input id="img_web" type="text" value="" hidden>
+                    <?php if(isset($_SESSION['user'])) : ?>
                     <input type="hidden" name="form_token" value="<?= $token ?>"/>
+                    <?php endif ?>
                 </div>
                 <div class="create_button">
                     <button type="submit" name="create_article" value="">Publier la photo</button>

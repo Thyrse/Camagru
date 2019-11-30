@@ -3,7 +3,6 @@ window.addEventListener("load", function() {
     var toggle_user = document.getElementById('toggle_user');
     var connect = document.getElementsByClassName('sign_in');
     var user = document.getElementsByClassName('infos_user');
-    var deleted = document.getElementById('delete_confirm');
 
     if (connect.length != 0) {
         function AppearConnect() {
@@ -33,23 +32,10 @@ window.addEventListener("load", function() {
         }
         AppearPanel();
     }
-    if (deleted !== null) {
-        function clicked() {
-            deleted.addEventListener("click", function(e) {
-                if (confirm('Voulez-vous vraiment effectuer cette action ?')) {
-                    return true;
-                } else {
-                    e.preventDefault();
-                    return false;
-                }
-            })
-        }
-        clicked();
-    }
 
     function clicked() {
         document.addEventListener("click", function(e) {
-            if (e.target.className == "commentary_delete" || e.target.className == "item_delete") {
+            if (e.target.className == "commentary_delete" || e.target.className == "item_delete" || e.target.className == "delete_confirm") {
                 if (confirm('Voulez-vous vraiment effectuer cette action ?')) {
                     return true;
                 } else {

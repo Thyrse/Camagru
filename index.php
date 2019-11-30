@@ -1,9 +1,7 @@
 <?php
-require_once('config/config.php');
+require_once('config/connect.php');
 require_once('class/user.class.php');
 require_once('class/article.class.php');
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
 if(isset($_SESSION['user'])) {
     $user = new Userinfo($_SESSION['user']);
     $user->setToken();
@@ -12,7 +10,7 @@ if(isset($_SESSION['user'])) {
 if (!isset($_GET['page'])) {
     $page = 1;
 }
-elseif($_GET['page'] == 0)
+elseif($_GET['page'] <= 0)
 {
     $page = 1;
     header('location: index.php');
@@ -48,9 +46,11 @@ if (isset($_GET['page']) && (int)$_GET['page'] > $total_pages)
     <div id="main" class="index_nav">
         <div class="items-block">
             <div class="items-list">
+                <?php if(empty($results)) : ?>
                 <div class="item_empty">
                     <p>Rien à afficher, revenez plus tard...</p>
                 </div>
+                <?php endif ?>
                 <?php foreach($results as $row) { 
                     $comments = $articles->getCommentary($row['id']);
                     $likes = $articles->getLike($row['id']);

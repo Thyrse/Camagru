@@ -1,9 +1,7 @@
 <?php
-require_once('config/config.php');
+require_once('config/connect.php');
 require_once('class/user.class.php');
 require_once('class/register.class.php');
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
 if(isset($_SESSION['user']))
     header('location: index.php');
 elseif(isset($_GET['token']) && isset($_GET['id']))
@@ -22,6 +20,7 @@ $token = $_SESSION['token'];
 <head>
     <title>Inscription</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="icon" type="image/png" href="assets/images/logo.png" />
     <script type="text/javascript" src="script.js"></script>
 </head>
 
@@ -42,6 +41,11 @@ $token = $_SESSION['token'];
                         <input type="hidden" name="token" value="<?= $_GET['token'] ?>"/>
                         <input type="hidden" name="id_user" value="<?= $_GET['id'] ?>"/>
                         <input type="hidden" name="form_token" value="<?= $token ?>"/>
+                        <?php if(isset($_SESSION['error_reg']) && $_SESSION['error_reg'] !== false): ?>
+                        <span class="msg_error"><?= $_SESSION['error_reg'] ?></span><?php $_SESSION['error_reg'] = false; ?>
+                        <?php elseif (isset($_SESSION['success']) && $_SESSION['success'] !== false): ?>
+                        <span class="msg_success"><?= $_SESSION['success'] ?></span><?php $_SESSION['success'] = false; ?>
+                        <?php endif ?>
                     </div>
                     <div class="create_button">
                         <button type="submit" name="reset_pwd" value="">Modifier</button>
@@ -54,6 +58,12 @@ $token = $_SESSION['token'];
                         <label for="username">Tapez le pseudo de votre compte :</label>
                         <input type="text" name="username" maxlength="10" placeholder="Ex: Tintin, Harambe..." required>
                         <input type="hidden" name="form_token" value="<?= $token ?>"/>
+                        <span>Vous allez recevoir les instructions par mail.</span>
+                        <?php if(isset($_SESSION['error_reg']) && $_SESSION['error_reg'] !== false): ?>
+                        <span class="msg_error"><?= $_SESSION['error_reg'] ?></span><?php $_SESSION['error_reg'] = false; ?>
+                        <?php elseif (isset($_SESSION['success']) && $_SESSION['success'] !== false): ?>
+                        <span class="msg_success"><?= $_SESSION['success'] ?></span><?php $_SESSION['success'] = false; ?>
+                        <?php endif ?>
                     </div>
                     <div class="create_button">
                         <button type="submit" name="reset_username" value="">Envoyer</button>
